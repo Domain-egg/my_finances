@@ -21,6 +21,7 @@ class LowerCard extends StatelessWidget {
                     child: DefaultTabController(
                         length: 2,
                         child: new Scaffold(
+                          resizeToAvoidBottomInset: false,
                           appBar: new TabBar(
                             tabs: [
                               Text(
