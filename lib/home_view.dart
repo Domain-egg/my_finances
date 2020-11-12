@@ -6,10 +6,10 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
-      backgroundColor: Colors.transparent,
+        resizeToAvoidBottomInset: false,
+        backgroundColor: Colors.transparent,
         body: Container(
-          color: Colors.transparent,
+            color: Colors.transparent,
             child: Column(
               children: [
                 Spacer(),

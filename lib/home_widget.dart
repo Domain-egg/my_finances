@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_finances/home_view.dart';
 import 'package:my_finances/pages.dart';
@@ -47,6 +48,9 @@ class _HomeState extends State<Home> {
                   title: Row(
                     children: [
                       Icon(Icons.home_rounded),
+                      Padding(
+                        padding: EdgeInsets.all(5),
+                      ),
                       Text('Home'),
                     ],
                   ),
@@ -57,6 +61,9 @@ class _HomeState extends State<Home> {
                   title: Row(
                     children: [
                       Icon(Icons.account_circle_rounded),
+                      Padding(
+                        padding: EdgeInsets.all(5),
+                      ),
                       Text('Profile'),
                     ],
                   ),
@@ -67,6 +74,9 @@ class _HomeState extends State<Home> {
                   title: Row(
                     children: [
                       Icon(Icons.person_add_alt_1_rounded),
+                      Padding(
+                        padding: EdgeInsets.all(5),
+                      ),
                       Text('Friends'),
                     ],
                   ),
@@ -77,15 +87,27 @@ class _HomeState extends State<Home> {
           ),
         ),
         appBar: AppBar(
-          title: SafeArea(
-              child: Row(
+          title: Row(
             children: <Widget>[
               Spacer(),
               Container(
+                alignment: Alignment.center,
+                height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: TextField(
                   decoration: new InputDecoration(
+                    contentPadding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width *
+                          0.03, // HERE THE IMPORTANT PART
+                    ),
                     icon: Icon(Icons.search_rounded),
+                    filled: true,
+                    fillColor: new Color.fromRGBO(255, 255, 255, 0.45),
+                    focusColor: Colors.black,
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black, width: 1.0),
+                      borderRadius: BorderRadius.circular(50),
+                    ),
                     border: OutlineInputBorder(
                       borderSide: BorderSide(color: Colors.grey, width: 1.0),
                       borderRadius: BorderRadius.circular(50),
@@ -96,7 +118,7 @@ class _HomeState extends State<Home> {
               ),
               Spacer(),
             ],
-          )),
+          ),
           elevation: 0,
           backgroundColor: Colors.transparent,
         ),

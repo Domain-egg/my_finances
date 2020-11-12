@@ -1,4 +1,4 @@
-class Entry  {
+class Entry {
   final String title;
   final DateTime date;
   final double money;
