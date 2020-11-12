@@ -1,75 +1,78 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_finances/Entry.dart';
-import 'package:intl/intl.dart';
+import 'package:my_finances/lower_card.dart';
 
 class HomeView extends StatelessWidget {
-  final List<Entry> entryList = [
-    Entry("Donuts", DateTime.now(), 20.00, "Mein Beck"),
-    Entry("Bagels", DateTime.now(), 20.00, "Mein Beck"),
-    Entry("Flug", DateTime.now(), 90.00, "Amsterdam"),
-    Entry("Hotel", DateTime.now(), 130.00, "Amsterdam"),
-    Entry("Drugs", DateTime.now(), 20.00, "Mein Dealer"),
-  ];
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: new ListView.builder(
-          itemCount: entryList.length,
-          itemBuilder: (BuildContext context, int index) =>
-              buildEntryCard(context, index)),
-    );
-  }
-
-  Widget buildEntryCard(BuildContext context, int index) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Container(
-        child: Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.0),
-          ),
-          color: Color(0xFFF2F2F2),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 12.0, bottom: 4.0),
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        entryList[index].title,
-                        style: new TextStyle(fontSize: 15.0),
-                      ),
-                      Spacer(),
-                      Text(
-                        "${entryList[index].money.toStringAsFixed(2)} €",
-                        style: new TextStyle(fontSize: 15.0),
-                      ),
-
-                    ],
-                  ),
+    return Scaffold(
+        endDrawer: Drawer(
+          // Add a ListView to the drawer. This ensures the user can scroll
+          // through the options in the drawer if there isn't enough vertical
+          // space to fit everything.
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Text('Drawer Header'),
+                decoration: BoxDecoration(
+                  color: Colors.blue,
                 ),
-                Row(
-                  children: <Widget>[
-                    Text(
-                      entryList[index].location,
-                      style: new TextStyle(
-                        fontSize: 11.0,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                    Spacer(),
-                  ],
-                ),
-
-                //Text(DateFormat('dd/MM/yyyy').format(entryList[index].date).toString()),
-              ],
-            ),
+              ),
+              ListTile(
+                title: Text('Item 1'),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              ListTile(
+                title: Text('Item 2'),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+            ],
           ),
         ),
-      ),
-    );
+        appBar: AppBar(
+          title: SafeArea(
+              child: Row(
+            children: <Widget>[
+              Spacer(),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.7,
+                child: TextField(
+                  decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: 'Enter a search term'),
+                ),
+              ),
+              Spacer(),
+            ],
+          )),
+          elevation: 0,
+          backgroundColor: Colors.purple,
+        ),
+        body: Container(
+            color: Colors.purple,
+            child: Column(
+              children: [
+                Spacer(),
+                Center(
+                  child: Text(
+                    "500.00€",
+                    style: new TextStyle(
+                      color: Colors.white,
+                      fontSize: 40,
+                    ),
+                  ),
+                ),
+                Spacer(),
+                LowerCard(),
+              ],
+            )));
   }
 }

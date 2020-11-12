@@ -9,7 +9,7 @@ class Home extends StatefulWidget {
   }
 }
 
-class _HomeState extends State<Home>  {
+class _HomeState extends State<Home> {
   int _currentIndex = 1;
   final List<Widget> _children = [
     DeptsPage(),
@@ -17,12 +17,11 @@ class _HomeState extends State<Home>  {
     EntrysPage(),
   ];
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _children[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
+              body: _children[_currentIndex],
+              /*bottomNavigationBar: BottomNavigationBar(
         onTap: onTabTapped,
         selectedItemColor: Colors.purple,
         backgroundColor: Colors.white,
@@ -44,10 +43,13 @@ class _HomeState extends State<Home>  {
             title: new Text("Einträge"),
           ),
         ],
-      ),
+      ),*/
+
+
     );
   }
-  void onTabTapped(int index){
+
+  void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;
     });

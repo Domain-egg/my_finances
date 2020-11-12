@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:english_words/english_words.dart';
 import 'home_widget.dart';
 import 'package:flutter/services.dart';
 
@@ -23,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: "MyFinances",
       theme: ThemeData(
+          backgroundColor: Colors.white,
           primarySwatch: Colors.pink,
           textTheme: Theme.of(context).textTheme.apply(
               fontFamily: 'PoppinsBold',
