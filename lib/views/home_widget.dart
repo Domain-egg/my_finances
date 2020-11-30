@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_finances/home_view.dart';
+import 'package:my_finances/views/home_view.dart';
 import 'package:my_finances/pages.dart';
 
 class Home extends StatefulWidget {
@@ -95,6 +95,7 @@ class _HomeState extends State<Home> {
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.7,
                 child: TextField(
+                  autofocus: false,
                   decoration: new InputDecoration(
                     contentPadding: EdgeInsets.only(
                       left: MediaQuery.of(context).size.width *
