@@ -1,5 +1,3 @@
-import 'package:location/location.dart';
-
 class Entry {
   String title;
   DateTime date;

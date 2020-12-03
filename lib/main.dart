@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'views/home_widget.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:my_finances/views/first-view.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -33,7 +34,12 @@ class MyApp extends StatelessWidget {
           textTheme: Theme.of(context).textTheme.apply(
                 fontFamily: 'PoppinsBold',
               )),
-      home: Home(),
+      home: FirstView(),
+      routes: <String, WidgetBuilder>{
+        '/home': (BuildContext context) => Home(),
+        //'/signUp' : (BuildContext context) => SignUp(),
+        //'/signIn' : (BuildContext context) => SignIn(),
+      },
     );
   }
 }

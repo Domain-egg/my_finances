@@ -3,8 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:my_finances/models/Entry.dart';
 import 'package:my_finances/views/entry_new.dart';
 
-class EntryView extends StatelessWidget {
-  final List<Entry> entryList = [
+class EntryView extends StatefulWidget {
+  @override
+  _EntryViewState createState() => _EntryViewState();
+}
+
+class _EntryViewState extends State<EntryView> {
+  List<Entry> entryList = [
     Entry("Donuts", DateTime.now(), -20.00, "Mein Beck"),
     Entry("Lohn", DateTime.now(), 220.00, "Mein Beck"),
     Entry("Flug", DateTime.now(), -90.00, "Amsterdam"),
