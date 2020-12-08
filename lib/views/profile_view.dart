@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_finances/services/auth_service.dart';
-import 'package:provider/provider.dart';
+import 'package:my_finances/widgets/provider_widget.dart';
 
 class ProfileView extends StatelessWidget {
   @override
@@ -64,8 +64,14 @@ class ProfileView extends StatelessWidget {
                   maxLines: 1,
                 ),
               ),
-              onPressed: () {
-                context.read<AuthService>().signOut();
+              onPressed: () async {
+                try {
+                  AuthService auth = Provider.of(context).auth;
+                  await auth.signOut();
+                  Navigator.of(context).pushReplacementNamed('/firstView');
+                } catch (e) {
+                  print(e);
+                }
               },
             ),
           ),

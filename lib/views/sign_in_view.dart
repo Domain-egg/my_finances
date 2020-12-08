@@ -1,13 +1,9 @@
 import 'dart:ui';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:my_finances/main.dart';
 import 'package:my_finances/services/auth_service.dart';
-import 'package:my_finances/widgets/custom_dialog.dart';
-import 'package:my_finances/services/auth_service.dart';
-import 'package:provider/provider.dart';
-import 'package:my_finances/views/home_widget.dart';
+import 'package:my_finances/widgets/provider_widget.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -107,12 +103,22 @@ class _SignInState extends State<SignIn> {
                         maxLines: 1,
                       ),
                     ),
-                    onPressed: () {
-                      context.read<AuthService>().signIn(
-                            email: _emailController.text.trim(),
-                            password: _passwordController.text.trim(),
-                          );
-                      AuthenticationWrapper();
+                    onPressed: () async {
+                      try {
+                        final auth = Provider
+                            .of(context)
+                            .auth;
+
+                        String uid = await auth.signIn(email: _emailController
+                            .text.trim(),
+                            password: _passwordController.text.trim());
+                        print("Signed In with ID $uid");
+                        if (uid == "Signed in") {
+                          Navigator.of(context).pushReplacementNamed('/home');
+                        }
+                      } catch (e) {
+                        print(e);
+                      }
                     },
                   ),
                 ),

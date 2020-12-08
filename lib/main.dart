@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:my_finances/services/auth_service.dart';
 import 'package:my_finances/views/sign_in_view.dart';
 import 'package:my_finances/views/sign_up_view.dart';
-import 'package:provider/provider.dart';
-import 'views/home_widget.dart';
+
+//import 'package:provider/provider.dart';
+import 'package:my_finances/views/home_widget.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:my_finances/views/first-view.dart';
+
+import 'package:my_finances/widgets/provider_widget.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -30,14 +33,8 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<AuthService>(
-          create: (_) => AuthService(FirebaseAuth.instance),
-        ),
-        StreamProvider(
-            create: (context) => context.read<AuthService>().authStateChanges)
-      ],
+    return Provider(
+      auth: AuthService(FirebaseAuth.instance),
       child: MaterialApp(
         title: "MyFinances",
         theme: ThemeData(
@@ -46,7 +43,7 @@ class MyApp extends StatelessWidget {
             textTheme: Theme.of(context).textTheme.apply(
                   fontFamily: 'PoppinsBold',
                 )),
-        home: AuthenticationWrapper(),
+        home: HomeController(),
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => Home(),
           '/signUp': (BuildContext context) => SignUp(),
@@ -58,18 +55,23 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class AuthenticationWrapper extends StatelessWidget {
-  const AuthenticationWrapper({
-    Key key,
-  }) : super(key: key);
 
+class HomeController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final firebaseUser = context.watch<User>();
-
-    if (firebaseUser != null) {
-      return Home();
-    }
-    return SignIn();
+    final AuthService auth = Provider
+        .of(context)
+        .auth;
+    return StreamBuilder<User>(
+      stream: auth.authStateChanges,
+      builder: (context, AsyncSnapshot<User> snapshot) {
+        if (snapshot.connectionState == ConnectionState.active) {
+          final bool signedIn = snapshot.hasData;
+          return signedIn ? Home() : FirstView();
+        }
+        return CircularProgressIndicator();
+      },
+    );
   }
 }
+
