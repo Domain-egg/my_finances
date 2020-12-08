@@ -1,7 +1,7 @@
 import 'dart:ui';
-import 'package:flutter/material.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:my_finances/widgets/custom_dialog.dart';
+import 'package:flutter/material.dart';
 
 class SignUp extends StatelessWidget {
   final _primaryColor = const Color(0xFFE336AE);
@@ -44,6 +44,29 @@ class SignUp extends StatelessWidget {
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
                       hintText: "Email",
+                      hintMaxLines: 1,
+                      hintStyle: TextStyle(
+                        color: Colors.grey,
+                      ),
+                      fillColor: Colors.white,
+                      border: new OutlineInputBorder(
+                        borderRadius: const BorderRadius.all(
+                          const Radius.circular(50.0),
+                        ),
+                      ),
+                      filled: true,
+                    ),
+                  ),
+                ),
+                SizedBox(height: _height * 0.025),
+                Container(
+                  width: _width * 0.8,
+                  child: TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: _passwordController,
+                    textAlign: TextAlign.center,
+                    decoration: InputDecoration(
+                      hintText: "Password",
                       hintMaxLines: 1,
                       hintStyle: TextStyle(
                         color: Colors.grey,
