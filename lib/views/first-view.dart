@@ -13,6 +13,7 @@ class FirstView extends StatelessWidget {
     final _height = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -50,19 +51,19 @@ class FirstView extends StatelessWidget {
                     child: Text(
                       "Get Started",
                       style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.w100),
+                      TextStyle(fontSize: 25, fontWeight: FontWeight.w100),
                     ),
                   ),
                   onPressed: () {
                     showDialog(
                         context: context,
                         builder: (BuildContext context) => CustomDialog(
-                              title: 'Would you like to crate a account?',
-                              description:
-                                  'With an account, your data will be securely saved.',
-                              primaryButtonText: 'Create My Account',
-                              primaryButtonRoute: '/home',
-                            ));
+                          title: 'Would you like to crate a account?',
+                          description:
+                          'With an account, your data will be securely saved.',
+                          primaryButtonText: 'Create My Account',
+                          primaryButtonRoute: '/home',
+                        ));
                   },
                 ),
                 SizedBox(height: _height * 0.05),
@@ -78,7 +79,9 @@ class FirstView extends StatelessWidget {
                       color: Colors.white,
                     ),
                   ),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.of(context).pushReplacementNamed('/signIn');
+                  },
                 ),
               ],
             ),

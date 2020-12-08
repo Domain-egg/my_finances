@@ -33,7 +33,6 @@ class NewEntryView extends StatelessWidget {
     }
 
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
       body: Container(
         child: ListView(
           children: [

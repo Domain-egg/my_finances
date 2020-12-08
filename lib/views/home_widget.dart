@@ -1,6 +1,8 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_finances/views/home_view.dart';
+import 'package:my_finances/views/profile_view.dart';
 import 'package:my_finances/pages.dart';
 
 class Home extends StatefulWidget {
@@ -14,7 +16,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _children = [
     HomeView(),
-    DeptsPage(),
+    ProfileView(),
     EntrysPage(),
   ];
 
@@ -31,15 +33,15 @@ class _HomeState extends State<Home> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
         endDrawer: Drawer(
-          // Add a ListView to the drawer. This ensures the user can scroll
-          // through the options in the drawer if there isn't enough vertical
-          // space to fit everything.
           child: ListView(
-            // Important: Remove any padding from the ListView.
             padding: EdgeInsets.zero,
             children: <Widget>[
               DrawerHeader(
-                child: Text('SimpleFinances'),
+                child: AutoSizeText(
+                  'MyFinances',
+                  maxLines: 1,
+                  style: TextStyle(fontSize: 24),
+                ),
                 decoration: BoxDecoration(
                   color: Colors.blue,
                 ),
@@ -56,6 +58,7 @@ class _HomeState extends State<Home> {
                   ),
                   onTap: () {
                     onTabTapped(0);
+                    Navigator.pop(context);
                   }),
               ListTile(
                   title: Row(
@@ -69,6 +72,7 @@ class _HomeState extends State<Home> {
                   ),
                   onTap: () {
                     onTabTapped(1);
+                    Navigator.pop(context);
                   }),
               ListTile(
                   title: Row(
@@ -82,6 +86,7 @@ class _HomeState extends State<Home> {
                   ),
                   onTap: () {
                     onTabTapped(2);
+                    Navigator.pop(context);
                   }),
             ],
           ),

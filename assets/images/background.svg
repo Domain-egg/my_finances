@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="375"
+    height="812" viewBox="0 0 375 812">
+    <defs>
+        <linearGradient id="linear-gradient" x1="0.505" y1="-0.029" x2="0.5" y2="1"
+            gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#0af7ff" stop-opacity="0.808" />
+            <stop offset="0.922" stop-color="#8a1bac" stop-opacity="0.769" />
+            <stop offset="1" stop-color="#9508a5" stop-opacity="0.765" />
+        </linearGradient>
+        <linearGradient id="linear-gradient-3" x1="0.5" y1="0.292" x2="0.49" y2="1.211"
+            gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#0af7ff" stop-opacity="0.808" />
+            <stop offset="1" stop-color="#9508a5" stop-opacity="0.765" />
+        </linearGradient>
+        <clipPath id="clip-Login_1">
+            <rect width="375" height="812" />
+        </clipPath>
+    </defs>
+    <g id="Login_1" data-name="Login – 1" clip-path="url(#clip-Login_1)">
+        <path id="Grundfläche" d="M0,0H375V812H0Z" fill="#fff" />
+        <ellipse id="Ellipse_3" data-name="Ellipse 3" cx="481.5" cy="454" rx="481.5" ry="454"
+            transform="translate(-127 -147)" fill="url(#linear-gradient)" />
+        <ellipse id="Ellipse_5" data-name="Ellipse 5" cx="481.5" cy="454" rx="481.5" ry="454"
+            transform="translate(46 -139)" fill="url(#linear-gradient)" />
+        <ellipse id="Ellipse_6" data-name="Ellipse 6" cx="481.5" cy="454" rx="481.5" ry="454"
+            transform="translate(-496 -318)" fill="url(#linear-gradient-3)" />
+    </g>
+</svg>
