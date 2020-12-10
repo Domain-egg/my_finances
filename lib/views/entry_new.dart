@@ -1,8 +1,8 @@
-import 'package:flutter/material.dart';
-import 'package:my_finances/models/Entry.dart';
-import 'package:intl/intl.dart';
-import 'package:location/location.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:my_finances/models/Entry.dart';
+import 'package:my_finances/widgets/provider_widget.dart';
 
 class NewEntryView extends StatelessWidget {
   final Entry entry;
@@ -12,8 +12,6 @@ class NewEntryView extends StatelessWidget {
   final db = FirebaseFirestore.instance;
 
   DateTime _dateTime;
-  double _money;
-  Location location;
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +90,7 @@ class NewEntryView extends StatelessWidget {
                       showDatePicker(
                         context: context,
                         initialDate:
-                            _dateTime == null ? DateTime.now() : _dateTime,
+                        _dateTime == null ? DateTime.now() : _dateTime,
                         firstDate: DateTime(2001),
                         lastDate: DateTime(2100),
                       ).then((date) {
@@ -169,7 +167,12 @@ class NewEntryView extends StatelessWidget {
                     entry.date = _dateTime;
                     entry.money = double.parse(_moneyController.text);
                     entry.reason = _reasonController.text;
-                    await db.collection("entrys").add(entry.toJson());
+                    final uid = await Provider
+                        .of(context)
+                        .auth
+                        .getCurrentUID();
+                    await db.collection("userData").doc(uid).collection(
+                        "entrys").add(entry.toJson());
                     Navigator.of(context).pop();
                   },
                 ),

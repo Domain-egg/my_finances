@@ -1,8 +1,7 @@
 import 'dart:ui';
-import 'package:flutter/material.dart';
+
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:my_finances/main.dart';
-import 'package:my_finances/services/auth_service.dart';
+import 'package:flutter/material.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
 class SignIn extends StatefulWidget {
@@ -105,12 +104,10 @@ class _SignInState extends State<SignIn> {
                     ),
                     onPressed: () async {
                       try {
-                        final auth = Provider
-                            .of(context)
-                            .auth;
+                        final auth = Provider.of(context).auth;
 
-                        String uid = await auth.signIn(email: _emailController
-                            .text.trim(),
+                        String uid = await auth.signIn(
+                            email: _emailController.text.trim(),
                             password: _passwordController.text.trim());
                         print("Signed In with ID $uid");
                         if (uid == "Signed in") {
@@ -128,7 +125,7 @@ class _SignInState extends State<SignIn> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: AutoSizeText(
-                    "No account?",
+                    "Create Account",
                     style: TextStyle(
                         fontSize: 15,
                         color: Colors.grey.shade300,
@@ -138,6 +135,20 @@ class _SignInState extends State<SignIn> {
                   onPressed: () {
                     Navigator.of(context).pushReplacementNamed('/signUp');
                   },
+                ),
+                FlatButton(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: AutoSizeText(
+                    "Forgot Password?",
+                    style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.grey.shade300,
+                        decoration: TextDecoration.underline),
+                    maxLines: 1,
+                  ),
+                  onPressed: () {},
                 ),
               ],
             ),

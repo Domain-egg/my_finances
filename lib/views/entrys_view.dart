@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_finances/models/Entry.dart';
+import 'package:my_finances/views/entry_info.dart';
 import 'package:my_finances/views/entry_new.dart';
+import 'package:my_finances/widgets/provider_widget.dart';
 
 class EntryView extends StatefulWidget {
   @override
@@ -9,14 +12,6 @@ class EntryView extends StatefulWidget {
 }
 
 class _EntryViewState extends State<EntryView> {
-  List<Entry> entryList = [
-    Entry("Donuts", DateTime.now(), -20.00, "Mein Beck"),
-    Entry("Lohn", DateTime.now(), 220.00, "Mein Beck"),
-    Entry("Flug", DateTime.now(), -90.00, "Amsterdam"),
-    Entry("Hotel", DateTime.now(), -130.00, "Amsterdam"),
-    Entry("Phone", DateTime.now(), -20.00, "Kiosk"),
-  ];
-
   @override
   Widget build(BuildContext context) {
     final newEntry = new Entry(null, null, null, null);
@@ -38,24 +33,57 @@ class _EntryViewState extends State<EntryView> {
         ),
         Container(
           child: Expanded(
-            child: new ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: entryList.length,
-                itemBuilder: (BuildContext context, int index) =>
-                    buildEntryCard(context, index)),
+            child: StreamBuilder(
+                stream: getUsersTripStreamSnapshots(context),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) return const Text("Loading...");
+                  return new ListView.builder(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (BuildContext context, int index) =>
+                          buildEntryCard(
+                              context, snapshot.data.documents[index]));
+                }
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget buildEntryCard(BuildContext context, int index) {
+  Stream<QuerySnapshot> getUsersTripStreamSnapshots(
+      BuildContext context) async* {
+    final uid = await Provider
+        .of(context)
+        .auth
+        .getCurrentUID();
+    yield* FirebaseFirestore.instance.collection('userData')
+        .doc(uid)
+        .collection("entrys")
+        .snapshots();
+  }
+
+
+  Widget buildEntryCard(BuildContext context, DocumentSnapshot document) {
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
-          onTap: () => {_entryEditModalBottomSheet(context)},
+          onTap: () =>
+          {
+            showModalBottomSheet(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(25.0)),
+                ),
+                context: context,
+                builder: (BuildContext bc) {
+                  return EntryInfo(
+                    entry: document,
+                  );
+                })
+          },
           child: Card(
             elevation: 0,
             shape: RoundedRectangleBorder(
@@ -71,15 +99,17 @@ class _EntryViewState extends State<EntryView> {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          entryList[index].title,
+                          document['title'],
                           style: new TextStyle(fontSize: 15.0),
                         ),
                         Spacer(),
                         Text(
-                          "${entryList[index].money >= 0 ? "+" : ""}${entryList[index].money.toStringAsFixed(2)} €",
+                          "${document['money'] >= 0
+                              ? "+"
+                              : ""}${document['money'].toStringAsFixed(2)} €",
                           style: new TextStyle(
                             fontSize: 15.0,
-                            color: entryList[index].money >= 0
+                            color: document['money'] >= 0
                                 ? Colors.green
                                 : Colors.red,
                           ),
@@ -90,7 +120,7 @@ class _EntryViewState extends State<EntryView> {
                   Row(
                     children: <Widget>[
                       Text(
-                        entryList[index].reason,
+                        document['reason'],
                         style: new TextStyle(
                           fontSize: 11.0,
                           color: Colors.grey[700],
@@ -108,38 +138,5 @@ class _EntryViewState extends State<EntryView> {
         ),
       ),
     );
-  }
-
-  void _entryEditModalBottomSheet(context) {
-    showModalBottomSheet(
-        context: context,
-        builder: (BuildContext bc) {
-          return Container(
-            height: MediaQuery.of(context).size.height * 0.60,
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Text("edit Entry"),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      IconButton(
-                        icon: Icon(Icons.cancel_rounded,
-                            color: Colors.red, size: 25),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          );
-        });
   }
 }

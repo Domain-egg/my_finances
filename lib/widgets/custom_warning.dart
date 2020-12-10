@@ -1,6 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class CustomWarning extends StatelessWidget {
   final String description, primaryButtonText;
@@ -41,22 +41,23 @@ class CustomWarning extends StatelessWidget {
                 Icon(
                   Icons.warning_amber_rounded,
                   size: _height * 0.1,
+                  color: Colors.red.shade600,
                 ),
-                SizedBox(height: _height * 0.1),
+                SizedBox(height: _height * 0.025),
                 AutoSizeText(
                   "Warning",
                   maxLines: 2,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25),
                 ),
-                SizedBox(height: _height * 0.1),
+                SizedBox(height: _height * 0.025),
                 AutoSizeText(
                   description,
                   maxLines: 4,
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, color: Colors.grey),
+                  style: TextStyle(fontSize: 24, color: Colors.grey),
                 ),
-                SizedBox(height: _height * 0.1),
+                SizedBox(height: _height * 0.025),
                 RaisedButton(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(

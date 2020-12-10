@@ -1,15 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:my_finances/services/auth_service.dart';
-import 'package:my_finances/views/sign_in_view.dart';
-import 'package:my_finances/views/sign_up_view.dart';
+import 'package:my_finances/views/first-view.dart';
 
 //import 'package:provider/provider.dart';
 import 'package:my_finances/views/home_widget.dart';
-import 'package:flutter/services.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:my_finances/views/first-view.dart';
-
+import 'package:my_finances/views/sign_in_view.dart';
+import 'package:my_finances/views/sign_up_view.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
 void main() async {
@@ -18,11 +17,11 @@ void main() async {
     // navigation bar color
     statusBarColor: Colors.transparent,
     // status bar color
-    statusBarBrightness: Brightness.dark,
+    statusBarBrightness: Brightness.light,
     //status bar brightness
-    statusBarIconBrightness: Brightness.dark,
+    statusBarIconBrightness: Brightness.light,
     //status barIcon Brightness
-    systemNavigationBarIconBrightness: Brightness.light, //navigation bar icon
+    systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icon
   ));
   //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,6 +37,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: "MyFinances",
         theme: ThemeData(
+          //canvasColor: Colors.transparent,
             backgroundColor: Colors.white,
             primarySwatch: Colors.pink,
             textTheme: Theme.of(context).textTheme.apply(
@@ -55,13 +55,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
-
 class HomeController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final AuthService auth = Provider
-        .of(context)
-        .auth;
+    final AuthService auth = Provider.of(context).auth;
     return StreamBuilder<User>(
       stream: auth.authStateChanges,
       builder: (context, AsyncSnapshot<User> snapshot) {
@@ -74,4 +71,3 @@ class HomeController extends StatelessWidget {
     );
   }
 }
-

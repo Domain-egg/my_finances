@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/material.dart';
 import 'package:my_finances/widgets/custom_dialog.dart';
 
 class FirstView extends StatelessWidget {
@@ -51,19 +51,20 @@ class FirstView extends StatelessWidget {
                     child: Text(
                       "Get Started",
                       style:
-                      TextStyle(fontSize: 25, fontWeight: FontWeight.w100),
+                          TextStyle(fontSize: 25, fontWeight: FontWeight.w100),
                     ),
                   ),
                   onPressed: () {
                     showDialog(
                         context: context,
-                        builder: (BuildContext context) => CustomDialog(
-                          title: 'Would you like to crate a account?',
-                          description:
-                          'With an account, your data will be securely saved.',
-                          primaryButtonText: 'Create My Account',
-                          primaryButtonRoute: '/home',
-                        ));
+                        builder: (BuildContext context) =>
+                            CustomDialog(
+                              title: 'Would you like to crate a account?',
+                              description:
+                              'With an account, your data will be securely saved.',
+                              primaryButtonText: 'Create My Account',
+                              primaryButtonRoute: '/home',
+                            ));
                   },
                 ),
                 SizedBox(height: _height * 0.05),

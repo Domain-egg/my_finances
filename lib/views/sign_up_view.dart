@@ -2,17 +2,24 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:my_finances/widgets/custom_warning.dart';
+import 'package:my_finances/widgets/provider_widget.dart';
 
-class SignUp extends StatelessWidget {
+class SignUp extends StatefulWidget {
+  @override
+  _SignUpState createState() => _SignUpState();
+}
+
+class _SignUpState extends State<SignUp> {
   final _primaryColor = const Color(0xFFE336AE);
+  TextEditingController _emailController = new TextEditingController();
+  TextEditingController _passwordController = new TextEditingController();
+  TextEditingController _repeatController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-
-    TextEditingController _emailController = new TextEditingController();
-    TextEditingController _passwordController = new TextEditingController();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -86,10 +93,10 @@ class SignUp extends StatelessWidget {
                   width: _width * 0.8,
                   child: TextField(
                     keyboardType: TextInputType.emailAddress,
-                    controller: _passwordController,
+                    controller: _repeatController,
                     textAlign: TextAlign.center,
                     decoration: InputDecoration(
-                      hintText: "Password",
+                      hintText: "Repeat",
                       hintMaxLines: 1,
                       hintStyle: TextStyle(
                         color: Colors.grey,
@@ -120,7 +127,40 @@ class SignUp extends StatelessWidget {
                         maxLines: 1,
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      try {
+                        if (_repeatController.text ==
+                            _passwordController.text) {
+                          final auth = Provider
+                              .of(context)
+                              .auth;
+
+                          String uid = await auth.signUp(
+                              email: _emailController.text.trim(),
+                              password: _passwordController.text.trim());
+                          print("$uid");
+                          if (uid == "Signed up") {
+                            Navigator.of(context)
+                                .pushReplacementNamed('/signIn');
+                          }
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  CustomWarning(
+                                    description:
+                                    'Your password is not the same',
+                                  ));
+                        }
+                      } catch (e) {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) =>
+                                CustomWarning(
+                                  description: '$e',
+                                ));
+                      }
+                    },
                   ),
                 ),
                 SizedBox(height: _height * 0.0125),

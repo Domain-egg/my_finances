@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_finances/views/entrys_view.dart';
-import 'package:my_finances/views/entry_new.dart';
 
 class LowerCard extends StatelessWidget {
   @override
@@ -36,11 +35,11 @@ class LowerCard extends StatelessWidget {
                       appBar: new TabBar(
                         tabs: [
                           Text(
-                            "Schulden",
+                            "Einträge",
                             style: new TextStyle(color: Colors.black),
                           ),
                           Text(
-                            "Einträge",
+                            "Schulden",
                             style: new TextStyle(color: Colors.black),
                           ),
                         ],
