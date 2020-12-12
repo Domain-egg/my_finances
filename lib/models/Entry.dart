@@ -1,3 +1,5 @@
+//**Model of Object**
+
 class Entry {
   String title;
   DateTime date;

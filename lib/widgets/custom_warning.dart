@@ -14,8 +14,8 @@ class CustomWarning extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
+    //**Creates Dialog**
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_padding),
@@ -44,6 +44,7 @@ class CustomWarning extends StatelessWidget {
                   color: Colors.red.shade600,
                 ),
                 SizedBox(height: _height * 0.025),
+                //**Title Text**
                 AutoSizeText(
                   "Warning",
                   maxLines: 2,
@@ -51,6 +52,7 @@ class CustomWarning extends StatelessWidget {
                   style: TextStyle(fontSize: 25),
                 ),
                 SizedBox(height: _height * 0.025),
+                //**Description Text**
                 AutoSizeText(
                   description,
                   maxLines: 4,
@@ -58,6 +60,7 @@ class CustomWarning extends StatelessWidget {
                   style: TextStyle(fontSize: 24, color: Colors.grey),
                 ),
                 SizedBox(height: _height * 0.025),
+                //**Close Button**
                 RaisedButton(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(

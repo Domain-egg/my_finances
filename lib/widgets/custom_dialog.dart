@@ -1,6 +1,6 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:auto_size_text/auto_size_text.dart';
 
 class CustomDialog extends StatelessWidget {
   final String title,
@@ -22,6 +22,8 @@ class CustomDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _height = MediaQuery.of(context).size.height;
+    //**Creates Dialog**
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_padding),
@@ -44,14 +46,16 @@ class CustomDialog extends StatelessWidget {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
-                SizedBox(height: 24),
+                SizedBox(height: _height * 0.025),
+                //**Title Text**
                 AutoSizeText(
                   title,
                   maxLines: 2,
                   textAlign: TextAlign.center,
                   style: TextStyle(fontSize: 25),
                 ),
-                SizedBox(height: 24),
+                SizedBox(height: _height * 0.025),
+                //**Description Text**
                 AutoSizeText(
                   description,
                   maxLines: 4,
@@ -59,6 +63,7 @@ class CustomDialog extends StatelessWidget {
                   style: TextStyle(fontSize: 18, color: Colors.grey),
                 ),
                 SizedBox(height: 24),
+                //**MainButton Text**
                 RaisedButton(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -72,14 +77,16 @@ class CustomDialog extends StatelessWidget {
                           TextStyle(fontSize: 18, fontWeight: FontWeight.w100),
                     ),
                   ),
+                  //**MainButton Route**
                   onPressed: () {
                     Navigator.of(context).pop();
                     Navigator.of(context)
                         .pushReplacementNamed(primaryButtonRoute);
                   },
                 ),
-                SizedBox(height: 10),
-                showSacondaryButton(context),
+                SizedBox(height: _height * 0.025),
+                //**SecondaryButton**
+                showSecondaryButton(context),
               ],
             ),
           ),
@@ -88,12 +95,15 @@ class CustomDialog extends StatelessWidget {
     );
   }
 
-  showSacondaryButton(BuildContext context) {
+  showSecondaryButton(BuildContext context) {
+    final _height = MediaQuery.of(context).size.height;
+    //**checks if SecondaryButton data got handed over**
     if (secondaryButtonRoute != null && secondaryButtonText != null) {
       return FlatButton(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(30),
         ),
+        //**SecondaryButton Text**
         child: AutoSizeText(
           secondaryButtonText,
           maxLines: 1,
@@ -103,13 +113,14 @@ class CustomDialog extends StatelessWidget {
             color: Colors.white,
           ),
         ),
+        //**SecondaryRoute**
         onPressed: () {
           Navigator.of(context).pop();
           Navigator.of(context).pushReplacementNamed(secondaryButtonRoute);
         },
       );
     } else {
-      return SizedBox(height: 10.0);
+      return SizedBox(height: _height * 0.025);
     }
   }
 }

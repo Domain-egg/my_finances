@@ -11,6 +11,8 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _primaryColor = const Color(0xFFE336AE);
+
+  //**creates TextControllers**
   final TextEditingController _emailController = new TextEditingController();
   final TextEditingController _passwordController = new TextEditingController();
 
@@ -43,6 +45,7 @@ class _SignInState extends State<SignIn> {
                 SizedBox(height: _height * 0.05),
                 Container(
                   width: _width * 0.8,
+                  //**Email TextField**
                   child: TextField(
                     keyboardType: TextInputType.emailAddress,
                     controller: _emailController,
@@ -66,6 +69,7 @@ class _SignInState extends State<SignIn> {
                 SizedBox(height: _height * 0.025),
                 Container(
                   width: _width * 0.8,
+                  //**Password TextField**
                   child: TextField(
                     obscureText: true,
                     controller: _passwordController,
@@ -87,6 +91,7 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 SizedBox(height: _height * 0.025),
+                //**Login Button**
                 ButtonTheme(
                   minWidth: _width * 0.4,
                   child: RaisedButton(
@@ -103,14 +108,15 @@ class _SignInState extends State<SignIn> {
                       ),
                     ),
                     onPressed: () async {
+                      //**LogIn with Input**
                       try {
                         final auth = Provider.of(context).auth;
 
-                        String uid = await auth.signIn(
+                        String login = await auth.signIn(
                             email: _emailController.text.trim(),
                             password: _passwordController.text.trim());
-                        print("Signed In with ID $uid");
-                        if (uid == "Signed in") {
+                        print("Signed In with ID $login");
+                        if (login == "Signed in") {
                           Navigator.of(context).pushReplacementNamed('/home');
                         }
                       } catch (e) {
@@ -120,6 +126,7 @@ class _SignInState extends State<SignIn> {
                   ),
                 ),
                 SizedBox(height: _height * 0.0125),
+                //**Create Account Button**
                 FlatButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -136,6 +143,7 @@ class _SignInState extends State<SignIn> {
                     Navigator.of(context).pushReplacementNamed('/signUp');
                   },
                 ),
+                //**Forgot Password Button**
                 FlatButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

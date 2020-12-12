@@ -14,6 +14,7 @@ class LowerCard extends StatelessWidget {
       color: Colors.white,
       child: Column(
         children: [
+          //**DragIcon**
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -28,6 +29,7 @@ class LowerCard extends StatelessWidget {
             child: Container(
                 height: MediaQuery.of(context).size.height * 0.5,
                 width: MediaQuery.of(context).size.width,
+                //**Creates two Tabs**
                 child: DefaultTabController(
                     length: 2,
                     child: new Scaffold(
@@ -44,6 +46,7 @@ class LowerCard extends StatelessWidget {
                           ),
                         ],
                       ),
+                      //**what is inside the Tabs**
                       body: TabBarView(
                         children: [
                           EntryView(),

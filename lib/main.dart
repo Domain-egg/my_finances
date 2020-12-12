@@ -4,26 +4,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:my_finances/services/auth_service.dart';
 import 'package:my_finances/views/first-view.dart';
-
-//import 'package:provider/provider.dart';
-import 'package:my_finances/views/home_widget.dart';
+import 'package:my_finances/views/page_viewer.dart';
 import 'package:my_finances/views/sign_in_view.dart';
 import 'package:my_finances/views/sign_up_view.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
 void main() async {
+  //**sets StatusBar Color to transparent**
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: Colors.white,
-    // navigation bar color
     statusBarColor: Colors.transparent,
-    // status bar color
-    statusBarBrightness: Brightness.light,
-    //status bar brightness
-    statusBarIconBrightness: Brightness.light,
-    //status barIcon Brightness
-    systemNavigationBarIconBrightness: Brightness.dark, //navigation bar icon
   ));
-  //SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+  //**initializes Firebase**
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(MyApp());
@@ -36,16 +27,17 @@ class MyApp extends StatelessWidget {
       auth: AuthService(FirebaseAuth.instance),
       child: MaterialApp(
         title: "MyFinances",
+        //**sets Theme**
         theme: ThemeData(
-          //canvasColor: Colors.transparent,
             backgroundColor: Colors.white,
             primarySwatch: Colors.pink,
             textTheme: Theme.of(context).textTheme.apply(
                   fontFamily: 'PoppinsBold',
                 )),
         home: HomeController(),
+        //**creates Routes**
         routes: <String, WidgetBuilder>{
-          '/home': (BuildContext context) => Home(),
+          '/home': (BuildContext context) => ViewPages(),
           '/signUp': (BuildContext context) => SignUp(),
           '/signIn': (BuildContext context) => SignIn(),
           '/firstView': (BuildContext context) => FirstView(),
@@ -55,6 +47,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
+//**checks if USer is Signed In and sends him to the correct page
 class HomeController extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -64,7 +57,7 @@ class HomeController extends StatelessWidget {
       builder: (context, AsyncSnapshot<User> snapshot) {
         if (snapshot.connectionState == ConnectionState.active) {
           final bool signedIn = snapshot.hasData;
-          return signedIn ? Home() : FirstView();
+          return signedIn ? ViewPages() : FirstView();
         }
         return CircularProgressIndicator();
       },

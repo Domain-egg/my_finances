@@ -4,22 +4,25 @@ import 'package:intl/intl.dart';
 import 'package:my_finances/models/Entry.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
+//**Create new Entry**
+
 class NewEntryView extends StatelessWidget {
   final Entry entry;
 
   NewEntryView({Key key, @required this.entry}) : super(key: key);
 
+  //**create Firebase instance**
   final db = FirebaseFirestore.instance;
 
   DateTime _dateTime;
 
   @override
   Widget build(BuildContext context) {
+    //**Creating all TextControllers**
     TextEditingController _titleController = new TextEditingController();
     TextEditingController _moneyController = new TextEditingController();
     TextEditingController _dateController = new TextEditingController();
     TextEditingController _reasonController = new TextEditingController();
-    //_titleController.text=entry.title;
 
     if (entry.money == null) {
       _moneyController.text = "0.00";
@@ -34,7 +37,7 @@ class NewEntryView extends StatelessWidget {
       body: Container(
         child: ListView(
           children: [
-            //NameTextField,
+            //**NameTextField**
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
@@ -51,7 +54,8 @@ class NewEntryView extends StatelessWidget {
                 ],
               ),
             ),
-            //MoneyTextField
+
+            //**MoneyTextField**
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
@@ -71,7 +75,8 @@ class NewEntryView extends StatelessWidget {
                 ],
               ),
             ),
-            //DateTextField
+
+            //**DateTextField**
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
@@ -90,7 +95,7 @@ class NewEntryView extends StatelessWidget {
                       showDatePicker(
                         context: context,
                         initialDate:
-                        _dateTime == null ? DateTime.now() : _dateTime,
+                            _dateTime == null ? DateTime.now() : _dateTime,
                         firstDate: DateTime(2001),
                         lastDate: DateTime(2100),
                       ).then((date) {
@@ -106,7 +111,8 @@ class NewEntryView extends StatelessWidget {
                 ],
               ),
             ),
-            //
+
+            //**ReasonTextField**
             Padding(
               padding: const EdgeInsets.all(30.0),
               child: Column(
@@ -126,7 +132,7 @@ class NewEntryView extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                //Cancel button
+                //**Cancel Button**
                 RaisedButton(
                   color: Colors.redAccent,
                   elevation: 0,
@@ -146,7 +152,8 @@ class NewEntryView extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                 ),
-                //Save Button
+
+                //**Save Button**
                 RaisedButton(
                   color: Colors.lightBlueAccent,
                   elevation: 0,
@@ -163,16 +170,21 @@ class NewEntryView extends StatelessWidget {
                     ],
                   ),
                   onPressed: () async {
+                    //**InputData gets Converted in to Entry**
                     entry.title = _titleController.text;
                     entry.date = _dateTime;
                     entry.money = double.parse(_moneyController.text);
                     entry.reason = _reasonController.text;
-                    final uid = await Provider
-                        .of(context)
-                        .auth
-                        .getCurrentUID();
-                    await db.collection("userData").doc(uid).collection(
-                        "entrys").add(entry.toJson());
+
+                    //**gets UID to save for current User**
+                    final uid = await Provider.of(context).auth.getCurrentUID();
+
+                    //**Entry gets saved in Firebase**
+                    await db
+                        .collection("userData")
+                        .doc(uid)
+                        .collection("entrys")
+                        .add(entry.toJson());
                     Navigator.of(context).pop();
                   },
                 ),

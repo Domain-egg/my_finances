@@ -1,9 +1,11 @@
 import 'package:auto_size_text/auto_size_text.dart';
-import 'package:flutter/material.dart';
+import 'package:clipboard/clipboard.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 import 'package:my_finances/services/auth_service.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
+//**Shows Info about User**
 class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class ProfileView extends StatelessWidget {
             height: _height * 0.15,
           ),
           SizedBox(height: _height * 0.1),
+          //**Shows email**
           AutoSizeText(
             FirebaseAuth.instance.currentUser.email,
             maxLines: 1,
@@ -29,7 +32,41 @@ class ProfileView extends StatelessWidget {
               fontSize: 20,
             ),
           ),
+          SizedBox(height: _height * 0.05),
+          AutoSizeText(
+            "UID:",
+            maxLines: 1,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+            ),
+          ),
+          SizedBox(height: _height * 0.025),
+          //**Shows UID**
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              AutoSizeText(
+                FirebaseAuth.instance.currentUser.uid,
+                maxLines: 1,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+              IconButton(
+                icon: Icon(Icons.copy_rounded),
+                color: Colors.white,
+                onPressed: () {
+                  //**Copy UID**
+                  FlutterClipboard.copy(FirebaseAuth.instance.currentUser.uid)
+                      .then((value) => print('copied'));
+                },
+              ),
+            ],
+          ),
           SizedBox(height: _height * 0.1),
+          //**PasswordReset Button**
           ButtonTheme(
             minWidth: _width * 0.4,
             child: RaisedButton(
@@ -49,6 +86,7 @@ class ProfileView extends StatelessWidget {
             ),
           ),
           SizedBox(height: _height * 0.1),
+          //**LogOut Button**
           ButtonTheme(
             minWidth: _width * 0.4,
             child: RaisedButton(
@@ -65,6 +103,7 @@ class ProfileView extends StatelessWidget {
                 ),
               ),
               onPressed: () async {
+                //**logs User out**
                 try {
                   AuthService auth = Provider.of(context).auth;
                   await auth.signOut();

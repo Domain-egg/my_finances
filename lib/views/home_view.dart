@@ -12,6 +12,7 @@ class HomeView extends StatelessWidget {
             color: Colors.transparent,
             child: CustomScrollView(
               slivers: <Widget>[
+                //**Creates resizable header**
                 SliverAppBar(
                   backgroundColor: Colors.transparent,
                   expandedHeight: 400,
@@ -33,6 +34,7 @@ class HomeView extends StatelessWidget {
                     ),
                   ),
                 ),
+                //**creates Items below header**
                 SliverFixedExtentList(
                   itemExtent: 500,
                   delegate: SliverChildListDelegate([

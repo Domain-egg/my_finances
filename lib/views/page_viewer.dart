@@ -1,28 +1,31 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:my_finances/views/Friends_view.dart';
 import 'package:my_finances/views/home_view.dart';
 import 'package:my_finances/views/profile_view.dart';
-import 'package:my_finances/pages.dart';
 
-class Home extends StatefulWidget {
+class ViewPages extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
-    return _HomeState();
+    return _ViewPagesState();
   }
 }
 
-class _HomeState extends State<Home> {
+class _ViewPagesState extends State<ViewPages> {
   int _currentIndex = 0;
+
+  //**List of Pages for Menu**
   final List<Widget> _children = [
     HomeView(),
     ProfileView(),
-    EntrysPage(),
+    Friends(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      //**Background**
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage("assets/images/background.png"),
@@ -32,10 +35,12 @@ class _HomeState extends State<Home> {
       child: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
+        //**Menu on top-right**
         endDrawer: Drawer(
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
+              //**Header of menu**
               DrawerHeader(
                 child: AutoSizeText(
                   'MyFinances',
@@ -46,6 +51,8 @@ class _HomeState extends State<Home> {
                   color: Colors.blue,
                 ),
               ),
+              //**Menu Items**
+              //**Home**
               ListTile(
                   title: Row(
                     children: [
@@ -60,6 +67,7 @@ class _HomeState extends State<Home> {
                     onTabTapped(0);
                     Navigator.pop(context);
                   }),
+              //**Profile**
               ListTile(
                   title: Row(
                     children: [
@@ -74,6 +82,7 @@ class _HomeState extends State<Home> {
                     onTabTapped(1);
                     Navigator.pop(context);
                   }),
+              //**Friends**
               ListTile(
                   title: Row(
                     children: [
@@ -99,6 +108,7 @@ class _HomeState extends State<Home> {
                 alignment: Alignment.center,
                 height: MediaQuery.of(context).size.height * 0.05,
                 width: MediaQuery.of(context).size.width * 0.7,
+                //**SearchBar**
                 child: TextField(
                   autofocus: false,
                   decoration: new InputDecoration(
@@ -133,6 +143,7 @@ class _HomeState extends State<Home> {
     );
   }
 
+  //**changes Page**
   void onTabTapped(int index) {
     setState(() {
       _currentIndex = index;

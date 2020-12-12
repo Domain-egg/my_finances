@@ -4,11 +4,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:my_finances/widgets/custom_dialog.dart';
 
+//**Screen that you see when you open the App first time or after logout**
 class FirstView extends StatelessWidget {
-  final _primaryColor = const Color(0xFFE336AE);
-
   @override
   Widget build(BuildContext context) {
+    //**gets width and height of screen**
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
 
@@ -23,6 +23,7 @@ class FirstView extends StatelessWidget {
         ),
         width: _width,
         height: _height,
+        //**SafeArea makes a padding around the notch**
         child: SafeArea(
           child: Padding(
             padding: const EdgeInsets.all(16.0),
@@ -55,19 +56,20 @@ class FirstView extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
+                    //**shows custom Dialog**
                     showDialog(
                         context: context,
-                        builder: (BuildContext context) =>
-                            CustomDialog(
+                        builder: (BuildContext context) => CustomDialog(
                               title: 'Would you like to crate a account?',
                               description:
-                              'With an account, your data will be securely saved.',
+                                  'With an account, your data will be securely saved.',
                               primaryButtonText: 'Create My Account',
-                              primaryButtonRoute: '/home',
+                              primaryButtonRoute: '/signUp',
                             ));
                   },
                 ),
                 SizedBox(height: _height * 0.05),
+                //**LogIn Button**
                 FlatButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

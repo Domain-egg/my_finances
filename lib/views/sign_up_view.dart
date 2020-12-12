@@ -129,41 +129,52 @@ class _SignUpState extends State<SignUp> {
                     ),
                     onPressed: () async {
                       try {
-                        if (_repeatController.text ==
+                        //**Checks if E-Mail Address contains "@"**
+                        if (!_passwordController.text.contains("@")) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => CustomWarning(
+                                    description:
+                                        'This is not a valid E-Mail address',
+                                  ));
+                          //**Checks if Password is >= 6 **
+                        } else if (_passwordController.text.length < 6) {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => CustomWarning(
+                                    description:
+                                        'Your password is too short (min. length 6)',
+                                  ));
+                          //**Checks if Password and RepeatPassword is the same **
+                        } else if (_repeatController.text ==
                             _passwordController.text) {
-                          final auth = Provider
-                              .of(context)
-                              .auth;
+                          //**Sign Up with InputData**
+                          final auth = Provider.of(context).auth;
 
-                          String uid = await auth.signUp(
+                          String signUp = await auth.signUp(
                               email: _emailController.text.trim(),
                               password: _passwordController.text.trim());
-                          print("$uid");
-                          if (uid == "Signed up") {
+                          print("$signUp");
+                          if (signUp == "Signed up") {
                             Navigator.of(context)
                                 .pushReplacementNamed('/signIn');
                           }
                         } else {
                           showDialog(
                               context: context,
-                              builder: (BuildContext context) =>
-                                  CustomWarning(
+                              builder: (BuildContext context) => CustomWarning(
                                     description:
-                                    'Your password is not the same',
+                                        'Your password is not the same',
                                   ));
                         }
                       } catch (e) {
-                        showDialog(
-                            context: context,
-                            builder: (BuildContext context) =>
-                                CustomWarning(
-                                  description: '$e',
-                                ));
+                        print(e);
                       }
                     },
                   ),
                 ),
                 SizedBox(height: _height * 0.0125),
+                //**Already an Account Button**
                 FlatButton(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),

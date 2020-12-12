@@ -45,7 +45,7 @@ dependencies:
 
   auto_size_text: ^2.0.2
 
-
+  clipboard: ^0.1.2+8
 
 dev_dependencies:
   flutter_test:

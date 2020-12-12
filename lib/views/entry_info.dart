@@ -1,3 +1,4 @@
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,9 +9,11 @@ class EntryInfo extends StatelessWidget {
   EntryInfo({Key key, @required this.entry}) : super(key: key);
 
   Widget build(BuildContext context) {
+    //**gets width and height of screen**
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
 
+    //**returns a decorated container with the entry info**
     return new Container(
       height: MediaQuery.of(context).size.height * 0.60,
       color: Colors.transparent,
@@ -31,11 +34,11 @@ class EntryInfo extends StatelessWidget {
         child: Column(
           children: <Widget>[
             Row(
-              //mainAxisAlignment: MainAxisAlignment.end,
               children: <Widget>[
                 IconButton(
                   icon: Icon(Icons.cancel_rounded, color: Colors.red, size: 25),
                   onPressed: () {
+                    //**closes the popup**
                     Navigator.of(context).pop();
                   },
                 ),
@@ -68,21 +71,99 @@ class EntryInfo extends StatelessWidget {
                 ),
               ],
             ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Text(entry['title']),
-                Text(
-                  "${entry['money'] >= 0 ? "+" : ""}${entry['money'].toStringAsFixed(2)} €",
-                  style: new TextStyle(
-                    color: entry['money'] >= 0 ? Colors.green : Colors.red,
+            Container(
+              width: _width * 0.8,
+              child: Row(
+                children: [
+                  //**Description**
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: _height * 0.03,
+                      ),
+                      AutoSizeText(
+                        'Title:',
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: _height * 0.01,
+                      ),
+                      AutoSizeText(
+                        "Money:",
+                        style: new TextStyle(fontSize: 20),
+                        maxLines: 1,
+                      ),
+                      SizedBox(
+                        height: _height * 0.01,
+                      ),
+                      AutoSizeText(
+                        "Date:",
+                        maxLines: 1,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: _height * 0.01,
+                      ),
+                      AutoSizeText(
+                        "Reason:",
+                        maxLines: 1,
+                        style: TextStyle(fontSize: 18),
+                      ),
+                    ],
                   ),
-                ),
-                Text(DateFormat('dd.MM.yyyy')
-                    .format(entry['date'].toDate())
-                    .toString()),
-                Text(entry['reason']),
-              ],
+                  Spacer(),
+                  //**Info**
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      SizedBox(
+                        height: _height * 0.03,
+                      ),
+                      AutoSizeText(
+                        entry['title'],
+                        maxLines: 1,
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.bold),
+                      ),
+                      SizedBox(
+                        height: _height * 0.01,
+                      ),
+                      AutoSizeText(
+                        "${entry['money'] >= 0 ? "+" : ""}${entry['money'].toStringAsFixed(2)} €",
+                        style: new TextStyle(
+                            color:
+                                entry['money'] >= 0 ? Colors.green : Colors.red,
+                            fontSize: 20),
+                        maxLines: 1,
+                      ),
+                      SizedBox(
+                        height: _height * 0.01,
+                      ),
+                      AutoSizeText(
+                        DateFormat('dd.MM.yyyy')
+                            .format(entry['date'].toDate())
+                            .toString(),
+                        maxLines: 1,
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: _height * 0.01,
+                      ),
+                      Container(
+                          width: _width * 0.50,
+                          child: AutoSizeText(
+                            entry['reason'],
+                            maxLines: 3,
+                            style: TextStyle(fontSize: 18),
+                          )),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),
