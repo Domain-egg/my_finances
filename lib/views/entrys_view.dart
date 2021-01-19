@@ -63,6 +63,7 @@ class _EntryViewState extends State<EntryView> {
         .collection('userData')
         .doc(uid)
         .collection("entrys")
+        .orderBy('date', descending: true)
         .snapshots();
   }
 

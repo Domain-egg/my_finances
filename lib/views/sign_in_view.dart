@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:my_finances/widgets/custom_warning.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
 class SignIn extends StatefulWidget {
@@ -118,6 +119,12 @@ class _SignInState extends State<SignIn> {
                         print("Signed In with ID $login");
                         if (login == "Signed in") {
                           Navigator.of(context).pushReplacementNamed('/home');
+                        } else {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) => CustomWarning(
+                                    description: login,
+                                  ));
                         }
                       } catch (e) {
                         print(e);

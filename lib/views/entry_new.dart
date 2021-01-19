@@ -6,15 +6,31 @@ import 'package:my_finances/widgets/provider_widget.dart';
 
 //**Create new Entry**
 
-class NewEntryView extends StatelessWidget {
+class NewEntryView extends StatefulWidget {
+  @override
   final Entry entry;
-
   NewEntryView({Key key, @required this.entry}) : super(key: key);
+  _NewEntryViewState createState() => _NewEntryViewState();
+}
 
+class _NewEntryViewState extends State<NewEntryView> {
   //**create Firebase instance**
   final db = FirebaseFirestore.instance;
 
   DateTime _dateTime;
+  int selectedRadio;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedRadio = 0;
+  }
+
+  setSelectedRadio(int val) {
+    setState(() {
+      selectedRadio = val;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +39,7 @@ class NewEntryView extends StatelessWidget {
     TextEditingController _moneyController = new TextEditingController();
     TextEditingController _dateController = new TextEditingController();
     TextEditingController _reasonController = new TextEditingController();
+    final Entry entry = widget.entry;
 
     if (entry.money == null) {
       _moneyController.text = "0.00";
@@ -50,10 +67,29 @@ class NewEntryView extends StatelessWidget {
                   TextField(
                     controller: _titleController,
                     autofocus: true,
+                    maxLength: 30,
                   ),
                 ],
               ),
             ),
+
+            RadioListTile(
+              value: 0,
+              groupValue: selectedRadio,
+              onChanged: (val) {
+                setSelectedRadio(val);
+              },
+              title: const Text('Ausgabe'),
+              activeColor: Colors.redAccent,
+            ),
+            RadioListTile(
+                value: 1,
+                groupValue: selectedRadio,
+                onChanged: (val) {
+                  setSelectedRadio(val);
+                },
+                activeColor: Colors.greenAccent,
+                title: const Text('Einnahme')),
 
             //**MoneyTextField**
             Padding(
@@ -71,6 +107,7 @@ class NewEntryView extends StatelessWidget {
                     ),
                     controller: _moneyController,
                     keyboardType: TextInputType.number,
+                    maxLength: 10,
                   ),
                 ],
               ),
@@ -125,6 +162,7 @@ class NewEntryView extends StatelessWidget {
                   TextField(
                     controller: _reasonController,
                     autofocus: true,
+                    maxLength: 40,
                   ),
                 ],
               ),
@@ -173,7 +211,7 @@ class NewEntryView extends StatelessWidget {
                     //**InputData gets Converted in to Entry**
                     entry.title = _titleController.text;
                     entry.date = _dateTime;
-                    entry.money = double.parse(_moneyController.text);
+                    entry.money = selectedRadio == 1 ? double.parse(_moneyController.text) : double.parse(_moneyController.text)*-1;
                     entry.reason = _reasonController.text;
 
                     //**gets UID to save for current User**

@@ -22,7 +22,7 @@ class _SignUpState extends State<SignUp> {
     final _height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: true,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -32,169 +32,174 @@ class _SignUpState extends State<SignUp> {
         ),
         width: _width,
         height: _height,
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: <Widget>[
-                SizedBox(height: _height * 0.10),
-                Image(
-                  image: AssetImage("assets/images/user.png"),
-                  height: _height * 0.25,
-                ),
-                SizedBox(height: _height * 0.05),
-                Container(
-                  width: _width * 0.8,
-                  child: TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: _emailController,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      hintText: "Email",
-                      hintMaxLines: 1,
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                      ),
-                      fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                          const Radius.circular(50.0),
+        child: ListView(children: <Widget>[
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                children: <Widget>[
+                  SizedBox(height: _height * 0.10),
+                  Image(
+                    image: AssetImage("assets/images/user.png"),
+                    height: _height * 0.25,
+                  ),
+                  SizedBox(height: _height * 0.05),
+                  Container(
+                    width: _width * 0.8,
+                    child: TextField(
+                      keyboardType: TextInputType.emailAddress,
+                      controller: _emailController,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        hintText: "Email",
+                        hintMaxLines: 1,
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
                         ),
+                        fillColor: Colors.white,
+                        border: new OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(50.0),
+                          ),
+                        ),
+                        filled: true,
                       ),
-                      filled: true,
                     ),
                   ),
-                ),
-                SizedBox(height: _height * 0.025),
-                Container(
-                  width: _width * 0.8,
-                  child: TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: _passwordController,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      hintText: "Password",
-                      hintMaxLines: 1,
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                      ),
-                      fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                          const Radius.circular(50.0),
+                  SizedBox(height: _height * 0.025),
+                  Container(
+                    width: _width * 0.8,
+                    child: TextField(
+                      obscureText: true,
+                      controller: _passwordController,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        hintText: "Password",
+                        hintMaxLines: 1,
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
                         ),
+                        fillColor: Colors.white,
+                        border: new OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(50.0),
+                          ),
+                        ),
+                        filled: true,
                       ),
-                      filled: true,
                     ),
                   ),
-                ),
-                SizedBox(height: _height * 0.025),
-                Container(
-                  width: _width * 0.8,
-                  child: TextField(
-                    keyboardType: TextInputType.emailAddress,
-                    controller: _repeatController,
-                    textAlign: TextAlign.center,
-                    decoration: InputDecoration(
-                      hintText: "Repeat",
-                      hintMaxLines: 1,
-                      hintStyle: TextStyle(
-                        color: Colors.grey,
-                      ),
-                      fillColor: Colors.white,
-                      border: new OutlineInputBorder(
-                        borderRadius: const BorderRadius.all(
-                          const Radius.circular(50.0),
+                  SizedBox(height: _height * 0.025),
+                  Container(
+                    width: _width * 0.8,
+                    child: TextField(
+                      obscureText: true,
+                      controller: _repeatController,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        hintText: "Repeat",
+                        hintMaxLines: 1,
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
                         ),
+                        fillColor: Colors.white,
+                        border: new OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(50.0),
+                          ),
+                        ),
+                        filled: true,
                       ),
-                      filled: true,
                     ),
                   ),
-                ),
-                SizedBox(height: _height * 0.025),
-                ButtonTheme(
-                  minWidth: _width * 0.4,
-                  child: RaisedButton(
-                    color: _primaryColor,
+                  SizedBox(height: _height * 0.025),
+                  ButtonTheme(
+                    minWidth: _width * 0.4,
+                    child: RaisedButton(
+                      color: _primaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: AutoSizeText(
+                          "Sign up",
+                          style: TextStyle(fontSize: 20, color: Colors.white),
+                          maxLines: 1,
+                        ),
+                      ),
+                      onPressed: () async {
+                        try {
+                          //**Checks if E-Mail Address contains "@"**
+                          if (!_emailController.text.contains("@")) {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    CustomWarning(
+                                      description:
+                                          'This is not a valid E-Mail address',
+                                    ));
+                            //**Checks if Password and RepeatPassword is the same **
+                          } else if (_repeatController.text ==
+                              _passwordController.text) {
+                            //**Sign Up with InputData**
+                            final auth = Provider.of(context).auth;
+
+                            String signUp = await auth.signUp(
+                                email: _emailController.text.trim(),
+                                password: _passwordController.text.trim());
+                            print("$signUp");
+
+                            if (signUp == "Signed up") {
+                              Navigator.of(context)
+                                  .pushReplacementNamed('/signIn');
+                            }else{
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) =>
+                                      CustomWarning(
+                                        description:
+                                        signUp,
+                                      ));
+                            }
+                          } else {
+                            showDialog(
+                                context: context,
+                                builder: (BuildContext context) =>
+                                    CustomWarning(
+                                      description:
+                                          'Your password is not the same',
+                                    ));
+                          }
+                        } catch (e) {
+                          print(e);
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(height: _height * 0.0125),
+                  //**Already an Account Button**
+                  FlatButton(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(30),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: AutoSizeText(
-                        "Sign up",
-                        style: TextStyle(fontSize: 20, color: Colors.white),
-                        maxLines: 1,
-                      ),
+                    child: AutoSizeText(
+                      "Already an account?",
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.grey.shade300,
+                          decoration: TextDecoration.underline),
+                      maxLines: 1,
                     ),
-                    onPressed: () async {
-                      try {
-                        //**Checks if E-Mail Address contains "@"**
-                        if (!_passwordController.text.contains("@")) {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => CustomWarning(
-                                    description:
-                                        'This is not a valid E-Mail address',
-                                  ));
-                          //**Checks if Password is >= 6 **
-                        } else if (_passwordController.text.length < 6) {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => CustomWarning(
-                                    description:
-                                        'Your password is too short (min. length 6)',
-                                  ));
-                          //**Checks if Password and RepeatPassword is the same **
-                        } else if (_repeatController.text ==
-                            _passwordController.text) {
-                          //**Sign Up with InputData**
-                          final auth = Provider.of(context).auth;
-
-                          String signUp = await auth.signUp(
-                              email: _emailController.text.trim(),
-                              password: _passwordController.text.trim());
-                          print("$signUp");
-                          if (signUp == "Signed up") {
-                            Navigator.of(context)
-                                .pushReplacementNamed('/signIn');
-                          }
-                        } else {
-                          showDialog(
-                              context: context,
-                              builder: (BuildContext context) => CustomWarning(
-                                    description:
-                                        'Your password is not the same',
-                                  ));
-                        }
-                      } catch (e) {
-                        print(e);
-                      }
+                    onPressed: () {
+                      Navigator.of(context).pushReplacementNamed('/signIn');
                     },
                   ),
-                ),
-                SizedBox(height: _height * 0.0125),
-                //**Already an Account Button**
-                FlatButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(30),
-                  ),
-                  child: AutoSizeText(
-                    "Already an account?",
-                    style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.grey.shade300,
-                        decoration: TextDecoration.underline),
-                    maxLines: 1,
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).pushReplacementNamed('/signIn');
-                  },
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
+        ]),
       ),
     );
   }
