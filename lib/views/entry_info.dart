@@ -2,6 +2,9 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:my_finances/models/Entry.dart';
+import 'package:my_finances/views/entry_new.dart';
+import 'package:my_finances/widgets/provider_widget.dart';
 
 class EntryInfo extends StatelessWidget {
   final DocumentSnapshot entry;
@@ -12,6 +15,10 @@ class EntryInfo extends StatelessWidget {
     //**gets width and height of screen**
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
+
+    final db = FirebaseFirestore.instance;
+
+    Entry editEntry = new Entry(entry['title'], entry['date'].toDate(), entry['money'], entry['reason']);
 
     //**returns a decorated container with the entry info**
     return new Container(
@@ -51,6 +58,10 @@ class EntryInfo extends StatelessWidget {
                           icon: Icon(Icons.edit, size: 25),
                           onPressed: () {
                             Navigator.of(context).pop();
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => NewEntryView(entry: editEntry, id: entry.id,)));
                           },
                         ),
                         IconButton(
@@ -61,8 +72,15 @@ class EntryInfo extends StatelessWidget {
                         ),
                         IconButton(
                           icon: Icon(Icons.delete_forever_rounded, size: 25),
-                          onPressed: () {
+                          onPressed: () async {
+                            final uid = await Provider.of(context).auth.getCurrentUID();
                             Navigator.of(context).pop();
+                            await db
+                                .collection("userData")
+                                .doc(uid)
+                                .collection("entrys")
+                                .doc(entry.id)
+                                .delete();
                           },
                         ),
                       ],

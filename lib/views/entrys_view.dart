@@ -2,10 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:my_finances/models/Entry.dart';
+import 'package:my_finances/services/GroupSeperator.dart';
 import 'package:my_finances/views/entry_info.dart';
 import 'package:my_finances/views/entry_new.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
+import 'package:grouped_list/grouped_list.dart';
 
 //**Stateful Widget because things are changing**
 class EntryView extends StatefulWidget {
@@ -28,7 +31,10 @@ class _EntryViewState extends State<EntryView> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => NewEntryView(entry: newEntry)));
+                        builder: (context) => NewEntryView(
+                              entry: newEntry,
+                              id: null,
+                            )));
               },
             )
           ],
@@ -41,13 +47,14 @@ class _EntryViewState extends State<EntryView> {
                 stream: getUsersEntryStreamSnapshots(context),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return const Text("Loading...");
-                  return new ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: snapshot.data.documents.length,
-                      itemBuilder: (BuildContext context, int index) =>
-                          buildEntryCard(
-                              context, snapshot.data.documents[index]));
+                  return GroupedListView <dynamic, DateTime>(
+                    elements: snapshot.data.documents,
+                    groupBy: (element) => DateTime.parse(DateFormat('yyyyMMdd').format(element['date'].toDate())+"T000000"),
+                    groupSeparatorBuilder: (DateTime date) => GroupSeparator(date: date,),
+                    indexedItemBuilder: (BuildContext context,dynamic, int index) =>
+                        buildEntryCard(context, snapshot.data.documents[index]),
+                    order: GroupedListOrder.DESC,
+                  );
                 }),
           ),
         ),
@@ -110,10 +117,10 @@ class _EntryViewState extends State<EntryView> {
                         ),
                         Spacer(),
                         Text(
-                          "${document['money'] >= 0 ? "+" : ""}${document['money'].toStringAsFixed(2)} €",
+                          "${document['money'] > 0 ? "+" : ""}${document['money'].toStringAsFixed(2)} €",
                           style: new TextStyle(
                             fontSize: 15.0,
-                            color: document['money'] >= 0
+                            color: document['money'] > 0
                                 ? Colors.green
                                 : Colors.red,
                           ),

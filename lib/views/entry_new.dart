@@ -9,7 +9,8 @@ import 'package:my_finances/widgets/provider_widget.dart';
 class NewEntryView extends StatefulWidget {
   @override
   final Entry entry;
-  NewEntryView({Key key, @required this.entry}) : super(key: key);
+  final String id;
+  NewEntryView({Key key, @required this.entry, @required this.id}) : super(key: key);
   _NewEntryViewState createState() => _NewEntryViewState();
 }
 
@@ -40,14 +41,35 @@ class _NewEntryViewState extends State<NewEntryView> {
     TextEditingController _dateController = new TextEditingController();
     TextEditingController _reasonController = new TextEditingController();
     final Entry entry = widget.entry;
+    final String id = widget.id;
+
+    if(entry.title!=null){
+      _titleController.text = entry.title;
+    }
 
     if (entry.money == null) {
       _moneyController.text = "0.00";
+    }else{
+      if(entry.money < 0){
+        setSelectedRadio(0);
+        _moneyController.text = (entry.money*-1).toString();
+      }else{
+        setSelectedRadio(1);
+        _moneyController.text = entry.money.toString();
+      }
+
     }
 
     if (entry.date == null) {
       _dateController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
       _dateTime = DateTime.now();
+    }else{
+      _dateController.text = DateFormat('dd.MM.yyyy').format(entry.date);
+      _dateTime = entry.date;
+    }
+
+    if(entry.reason!=null){
+      _reasonController.text = entry.reason;
     }
 
     return Scaffold(
@@ -218,12 +240,23 @@ class _NewEntryViewState extends State<NewEntryView> {
                     final uid = await Provider.of(context).auth.getCurrentUID();
 
                     //**Entry gets saved in Firebase**
-                    await db
-                        .collection("userData")
-                        .doc(uid)
-                        .collection("entrys")
-                        .add(entry.toJson());
-                    Navigator.of(context).pop();
+                    if(id==null){
+                      await db
+                          .collection("userData")
+                          .doc(uid)
+                          .collection("entrys")
+                          .add(entry.toJson());
+                      Navigator.of(context).pop();
+                    }else{
+                      await db
+                          .collection("userData")
+                          .doc(uid)
+                          .collection("entrys")
+                          .doc(id)
+                          .update(entry.toJson());
+                      Navigator.of(context).pop();
+                    }
+
                   },
                 ),
               ],
