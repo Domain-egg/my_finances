@@ -10,13 +10,20 @@ class NewEntryView extends StatefulWidget {
   @override
   final Entry entry;
   final String id;
-  NewEntryView({Key key, @required this.entry, @required this.id}) : super(key: key);
+  NewEntryView({Key key, @required this.entry, @required this.id})
+      : super(key: key);
   _NewEntryViewState createState() => _NewEntryViewState();
 }
 
 class _NewEntryViewState extends State<NewEntryView> {
   //**create Firebase instance**
   final db = FirebaseFirestore.instance;
+
+  //**Creating all TextControllers**
+  TextEditingController _titleController = new TextEditingController();
+  TextEditingController _moneyController = new TextEditingController();
+  TextEditingController _dateController = new TextEditingController();
+  TextEditingController _reasonController = new TextEditingController();
 
   DateTime _dateTime;
   int selectedRadio;
@@ -35,41 +42,38 @@ class _NewEntryViewState extends State<NewEntryView> {
 
   @override
   Widget build(BuildContext context) {
-    //**Creating all TextControllers**
-    TextEditingController _titleController = new TextEditingController();
-    TextEditingController _moneyController = new TextEditingController();
-    TextEditingController _dateController = new TextEditingController();
-    TextEditingController _reasonController = new TextEditingController();
     final Entry entry = widget.entry;
     final String id = widget.id;
 
-    if(entry.title!=null){
+    if (entry.title != null) {
       _titleController.text = entry.title;
     }
 
-    if (entry.money == null) {
-      _moneyController.text = "0.00";
-    }else{
-      if(entry.money < 0){
-        setSelectedRadio(0);
-        _moneyController.text = (entry.money*-1).toString();
-      }else{
-        setSelectedRadio(1);
-        _moneyController.text = entry.money.toString();
+    if (_moneyController.text == "") {
+      if (entry.money == null) {
+        _moneyController.text = "0.00";
+      } else {
+        if (entry.money < 0) {
+          setSelectedRadio(0);
+          _moneyController.text = (entry.money * -1).toString();
+        } else {
+          setSelectedRadio(1);
+          _moneyController.text = entry.money.toString();
+        }
+      }
+    }
+    if (_dateController.text == "") {
+      if (entry.date == null) {
+        _dateController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
+        _dateTime = DateTime.now();
+      } else {
+        _dateController.text = DateFormat('dd.MM.yyyy').format(entry.date);
+        _dateTime = entry.date;
       }
 
-    }
-
-    if (entry.date == null) {
-      _dateController.text = DateFormat('dd.MM.yyyy').format(DateTime.now());
-      _dateTime = DateTime.now();
-    }else{
-      _dateController.text = DateFormat('dd.MM.yyyy').format(entry.date);
-      _dateTime = entry.date;
-    }
-
-    if(entry.reason!=null){
-      _reasonController.text = entry.reason;
+      if (entry.reason != null) {
+        _reasonController.text = entry.reason;
+      }
     }
 
     return Scaffold(
@@ -233,21 +237,45 @@ class _NewEntryViewState extends State<NewEntryView> {
                     //**InputData gets Converted in to Entry**
                     entry.title = _titleController.text;
                     entry.date = _dateTime;
-                    entry.money = selectedRadio == 1 ? double.parse(_moneyController.text) : double.parse(_moneyController.text)*-1;
+                    entry.money = selectedRadio == 1
+                        ? double.parse(_moneyController.text)
+                        : double.parse(_moneyController.text) * -1;
                     entry.reason = _reasonController.text;
 
                     //**gets UID to save for current User**
                     final uid = await Provider.of(context).auth.getCurrentUID();
 
                     //**Entry gets saved in Firebase**
-                    if(id==null){
+                    if (id == null) {
                       await db
                           .collection("userData")
                           .doc(uid)
                           .collection("entrys")
                           .add(entry.toJson());
+
+                      var snapshot = await db
+                          .collection("userData")
+                          .doc(uid)
+                          .collection("entrys")
+                          .doc("sumEntry")
+                          .get();
+
+                      double sum = 0;
+
+                      if (snapshot.exists) {
+                        sum = snapshot['sum'];
+                      }
+
+                      await db
+                          .collection("userData")
+                          .doc(uid)
+                          .collection("entrys")
+                          .doc("sumEntry")
+                          .set({
+                        'sum': entry.money + sum,
+                      });
                       Navigator.of(context).pop();
-                    }else{
+                    } else {
                       await db
                           .collection("userData")
                           .doc(uid)
@@ -256,7 +284,6 @@ class _NewEntryViewState extends State<NewEntryView> {
                           .update(entry.toJson());
                       Navigator.of(context).pop();
                     }
-
                   },
                 ),
               ],

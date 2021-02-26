@@ -1,9 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_finances/views/entrys_view.dart';
 import 'package:my_finances/views/lower_card.dart';
-import 'package:my_finances/widgets/provider_widget.dart';
 
 class HomeView extends StatefulWidget {
 
@@ -12,23 +11,18 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+ double _sum = 0;
+  _HomeViewState() {
+    sum().then((val) => setState(() {
+      _sum = val;
+    }));
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
-    double sum = null;
 
-    Stream<QuerySnapshot> getUsersEntryStreamSnapshots(
-        BuildContext context) async* {
-      final uid = await Provider.of(context).auth.getCurrentUID();
-      yield* FirebaseFirestore.instance
-          .collection('userData')
-          .doc(uid)
-          .collection("entrys")
-          .orderBy('date', descending: true)
-          .snapshots();
-    }
-    
-    print(getUsersEntryStreamSnapshots(context).forEach((element) {print(element);}));
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -51,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
                         children: [
                           Spacer(),
                           Text(
-                            sum == null ? "loading..." :"$sum €",
+                            _sum == null ? "loading..." :"$_sum €",
                             style: new TextStyle(
                               color: Colors.white,
                               fontSize: 40,
@@ -73,4 +67,22 @@ class _HomeViewState extends State<HomeView> {
               ),
             )));
   }
+
+
+
+Future<double> sum() async {
+  final uid = FirebaseAuth.instance.currentUser.uid;
+  final db = FirebaseFirestore.instance;
+  var snapshot = await db
+      .collection("userData")
+      .doc(uid)
+      .collection("entrys")
+      .doc("sumEntry").get();
+
+  if(snapshot.exists){
+    return (await snapshot['sum']);
+  }else{
+    return (await 8686);
+  }
+}
 }
