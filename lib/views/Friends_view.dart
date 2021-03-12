@@ -21,7 +21,10 @@ class _FriendsState extends State<Friends> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.add, color: Colors.white,),
+              icon: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
               onPressed: () {
                 showDialog(
                     context: context,
@@ -37,7 +40,7 @@ class _FriendsState extends State<Friends> {
         Container(
           child: Expanded(
             child: StreamBuilder(
-                stream: getUsersEntryStreamSnapshots(context),
+                stream: getUsersFriendStreamSnapshots(context),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return const Text("Loading...");
                   return new ListView.builder(
@@ -55,7 +58,7 @@ class _FriendsState extends State<Friends> {
   }
 
   //**Gets Data specific for this User**
-  Stream<QuerySnapshot> getUsersEntryStreamSnapshots(
+  Stream<QuerySnapshot> getUsersFriendStreamSnapshots(
       BuildContext context) async* {
     final uid = await Provider.of(context).auth.getCurrentUID();
     yield* FirebaseFirestore.instance
@@ -69,7 +72,6 @@ class _FriendsState extends State<Friends> {
   Widget buildEntryCard(BuildContext context, DocumentSnapshot document) {
     //**gets width and height of screen**
     final _width = MediaQuery.of(context).size.width;
-    final _height = MediaQuery.of(context).size.height;
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -96,9 +98,8 @@ class _FriendsState extends State<Friends> {
                         "${document['dept'] > 0 ? "+" : ""}  ${document['dept'].toStringAsFixed(2)} €",
                         style: new TextStyle(
                           fontSize: 15.0,
-                          color: document['dept'] >= 0
-                              ? Colors.green
-                              : Colors.red,
+                          color:
+                              document['dept'] >= 0 ? Colors.green : Colors.red,
                         ),
                       ),
                     ],

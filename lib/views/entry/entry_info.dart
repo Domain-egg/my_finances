@@ -3,8 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_finances/models/Entry.dart';
-import 'package:my_finances/views/entry_new.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
+
+import 'file:///C:/Users/alexd/Desktop/my_finances/lib/views/entry/entry_new.dart';
 
 class EntryInfo extends StatelessWidget {
   final DocumentSnapshot entry;
@@ -77,9 +78,8 @@ class EntryInfo extends StatelessWidget {
                         IconButton(
                           icon: Icon(Icons.delete_forever_rounded, size: 25),
                           onPressed: () async {
-                            final uid = await Provider.of(context).auth.getCurrentUID();
-
-
+                            final uid =
+                                await Provider.of(context).auth.getCurrentUID();
 
                             var snapshot = await db
                                 .collection("userData")
@@ -100,7 +100,7 @@ class EntryInfo extends StatelessWidget {
                                 .collection("sums")
                                 .doc("sumEntry")
                                 .set({
-                              'sumE': sum - entry['money'] ,
+                              'sumE': sum - entry['money'],
                             });
 
                             await db

@@ -6,9 +6,9 @@ class Friend {
   double dept;
 
   Friend(
-      this.name,
-      this.uid,
-      this.dept,
+    this.name,
+    this.uid,
+    this.dept,
   );
 
   Map<String, dynamic> toJson() => {

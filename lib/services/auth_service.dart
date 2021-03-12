@@ -18,7 +18,7 @@ class AuthService {
         .doc("sumEntry")
         .get();
 
-    if(!snapshot.exists){
+    if (!snapshot.exists) {
       await FirebaseFirestore.instance
           .collection("userData")
           .doc(_firebaseAuth.currentUser.uid)
@@ -30,8 +30,6 @@ class AuthService {
     }
 
     return (await _firebaseAuth.currentUser.uid);
-
-
   }
 
   //**logs out User**

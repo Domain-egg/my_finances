@@ -4,22 +4,22 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
-import 'package:my_finances/models/Entry.dart';
+import 'package:my_finances/models/Dept.dart';
 import 'package:my_finances/services/GroupSeperator.dart';
-import 'package:my_finances/views/entry_info.dart';
-import 'package:my_finances/views/entry_new.dart';
+import 'package:my_finances/views/dept/dept_info.dart';
+import 'package:my_finances/views/dept/dept_new.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
 //**Stateful Widget because things are changing**
-class EntryView extends StatefulWidget {
+class DeptView extends StatefulWidget {
   @override
-  _EntryViewState createState() => _EntryViewState();
+  _DeptViewState createState() => _DeptViewState();
 }
 
-class _EntryViewState extends State<EntryView> {
+class _DeptViewState extends State<DeptView> {
   @override
   Widget build(BuildContext context) {
-    final newEntry = new Entry(null, null, null, null);
+    final newDept = new Dept(null, null, null, null, null);
     return Column(
       children: <Widget>[
         Row(
@@ -31,8 +31,8 @@ class _EntryViewState extends State<EntryView> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => NewEntryView(
-                              entry: newEntry,
+                        builder: (context) => NewDeptView(
+                              dept: newDept,
                               id: null,
                             )));
               },
@@ -43,8 +43,8 @@ class _EntryViewState extends State<EntryView> {
         //**Builds List**
         Container(
           child: Expanded(
-            child: StreamBuilder(
-                stream: getUsersEntryStreamSnapshots(context),
+            child: new StreamBuilder(
+                stream: getUsersFriendsStreamSnapshots(context),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return const Text("Loading...");
                   return GroupedListView<dynamic, DateTime>(
@@ -57,7 +57,7 @@ class _EntryViewState extends State<EntryView> {
                     ),
                     indexedItemBuilder: (BuildContext context, dynamic,
                             int index) =>
-                        buildEntryCard(context, snapshot.data.documents[index]),
+                        buildDeptCard(context, snapshot.data.documents[index]),
                     order: GroupedListOrder.DESC,
                   );
                 }),
@@ -68,23 +68,23 @@ class _EntryViewState extends State<EntryView> {
   }
 
   //**Gets Data specific for this User**
-  Stream<QuerySnapshot> getUsersEntryStreamSnapshots(
+  Stream<QuerySnapshot> getUsersFriendsStreamSnapshots(
       BuildContext context) async* {
     final uid = await Provider.of(context).auth.getCurrentUID();
     yield* FirebaseFirestore.instance
         .collection('userData')
         .doc(uid)
-        .collection("entrys")
+        .collection("depts")
         .orderBy('date', descending: true)
         .snapshots();
   }
 
   //**build every individual Item**
-  Widget buildEntryCard(BuildContext context, DocumentSnapshot document) {
+  Widget buildDeptCard(BuildContext context, DocumentSnapshot document) {
     //**gets width and height of screen**
     final _width = MediaQuery.of(context).size.width;
 
-    return Container(
+    return new Container(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: GestureDetector(
@@ -97,8 +97,8 @@ class _EntryViewState extends State<EntryView> {
                 ),
                 context: context,
                 builder: (BuildContext bc) {
-                  return EntryInfo(
-                    entry: document,
+                  return DeptInfo(
+                    dept: document,
                   );
                 })
           },
@@ -117,15 +117,15 @@ class _EntryViewState extends State<EntryView> {
                     child: Row(
                       children: <Widget>[
                         Text(
-                          document['title'],
+                          document.data()['friend'].toString(),
                           style: new TextStyle(fontSize: 15.0),
                         ),
                         Spacer(),
                         Text(
-                          "${document['money'] > 0 ? "+" : ""}${document['money'].toStringAsFixed(2)} €",
+                          "${document.data()['money'] > 0 ? "+" : ""}${document.data()['money'].toStringAsFixed(2)} €",
                           style: new TextStyle(
                             fontSize: 15.0,
-                            color: document['money'] > 0
+                            color: document.data()['money'] > 0
                                 ? Colors.green
                                 : Colors.red,
                           ),
@@ -138,7 +138,7 @@ class _EntryViewState extends State<EntryView> {
                       Container(
                         width: _width * 0.87,
                         child: AutoSizeText(
-                          document['reason'],
+                          document.data()['reason'],
                           maxLines: 1,
                           style: new TextStyle(
                             fontSize: 11.0,

@@ -10,8 +10,6 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  double _sum = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +65,7 @@ class UserSum extends StatelessWidget {
       stream: documentStream,
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
-          return  new Text(
+          return new Text(
             "0.00 €",
             style: new TextStyle(
               color: Colors.white,
@@ -82,16 +80,29 @@ class UserSum extends StatelessWidget {
 
         return new Column(
           children: snapshot.data.docs.map((DocumentSnapshot document) {
-            String _sum = document.data()['sumE'].toStringAsFixed(2);
-            if (false){
-              _sum = "0.00";
-            }
-            return new Text(
-              "$_sum €",
-              style: new TextStyle(
-                color: Colors.white,
-                fontSize: 40,
-              ),
+            String _sumE = document.data()['sumE'].toStringAsFixed(2);
+            //String _sumD = document.data()['sumD'].toStringAsFixed(2);
+
+            return Column(
+              children: [
+                new Text(
+                  "$_sumE €",
+                  style: new TextStyle(
+                    color: Colors.white,
+                    fontSize: 40,
+                  ),
+                ),
+
+                //**for later versions***//
+
+                /*new Text(
+                  "$_sumD €",
+                  style: new TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                ),*/
+              ],
             );
           }).toList(),
         );
