@@ -5,25 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:my_finances/views/lower_card.dart';
 
 class HomeView extends StatefulWidget {
-
   @override
   _HomeViewState createState() => _HomeViewState();
 }
 
 class _HomeViewState extends State<HomeView> {
- double _sum = 0;
-  _HomeViewState() {
-    sum().then((val) => setState(() {
-      _sum = val;
-    }));
-  }
-
-
+  double _sum = 0;
 
   @override
   Widget build(BuildContext context) {
-
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.transparent,
@@ -44,13 +34,7 @@ class _HomeViewState extends State<HomeView> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Spacer(),
-                          Text(
-                            _sum == null ? "loading..." :"$_sum €",
-                            style: new TextStyle(
-                              color: Colors.white,
-                              fontSize: 40,
-                            ),
-                          ),
+                          UserSum(),
                           Spacer(),
                         ],
                       ),
@@ -67,22 +51,51 @@ class _HomeViewState extends State<HomeView> {
               ),
             )));
   }
-
-
-
-Future<double> sum() async {
-  final uid = FirebaseAuth.instance.currentUser.uid;
-  final db = FirebaseFirestore.instance;
-  var snapshot = await db
-      .collection("userData")
-      .doc(uid)
-      .collection("entrys")
-      .doc("sumEntry").get();
-
-  if(snapshot.exists){
-    return (await snapshot['sum']);
-  }else{
-    return (await 8686);
-  }
 }
+
+class UserSum extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final uid = FirebaseAuth.instance.currentUser.uid;
+    Stream documentStream = FirebaseFirestore.instance
+        .collection("userData")
+        .doc(uid)
+        .collection("sums")
+        .snapshots();
+
+    return StreamBuilder<QuerySnapshot>(
+      stream: documentStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return  new Text(
+            "0.00 €",
+            style: new TextStyle(
+              color: Colors.white,
+              fontSize: 40,
+            ),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Text("Loading...");
+        }
+
+        return new Column(
+          children: snapshot.data.docs.map((DocumentSnapshot document) {
+            String _sum = document.data()['sumE'].toStringAsFixed(2);
+            if (false){
+              _sum = "0.00";
+            }
+            return new Text(
+              "$_sum €",
+              style: new TextStyle(
+                color: Colors.white,
+                fontSize: 40,
+              ),
+            );
+          }).toList(),
+        );
+      },
+    );
+  }
 }

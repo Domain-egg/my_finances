@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
@@ -10,7 +11,27 @@ class AuthService {
 
   //**gets current UID**
   Future<String> getCurrentUID() async {
+    var snapshot = await FirebaseFirestore.instance
+        .collection("userData")
+        .doc(_firebaseAuth.currentUser.uid)
+        .collection("sums")
+        .doc("sumEntry")
+        .get();
+
+    if(!snapshot.exists){
+      await FirebaseFirestore.instance
+          .collection("userData")
+          .doc(_firebaseAuth.currentUser.uid)
+          .collection("sums")
+          .doc("sumEntry")
+          .set({
+        'sumE': 0.00,
+      });
+    }
+
     return (await _firebaseAuth.currentUser.uid);
+
+
   }
 
   //**logs out User**

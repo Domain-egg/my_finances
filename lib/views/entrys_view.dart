@@ -2,13 +2,13 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:my_finances/models/Entry.dart';
 import 'package:my_finances/services/GroupSeperator.dart';
 import 'package:my_finances/views/entry_info.dart';
 import 'package:my_finances/views/entry_new.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
-import 'package:grouped_list/grouped_list.dart';
 
 //**Stateful Widget because things are changing**
 class EntryView extends StatefulWidget {
@@ -47,11 +47,16 @@ class _EntryViewState extends State<EntryView> {
                 stream: getUsersEntryStreamSnapshots(context),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) return const Text("Loading...");
-                  return GroupedListView <dynamic, DateTime>(
+                  return GroupedListView<dynamic, DateTime>(
                     elements: snapshot.data.documents,
-                    groupBy: (element) => DateTime.parse(DateFormat('yyyyMMdd').format(element['date'].toDate())+"T000000"),
-                    groupSeparatorBuilder: (DateTime date) => GroupSeparator(date: date,),
-                    indexedItemBuilder: (BuildContext context,dynamic, int index) =>
+                    groupBy: (element) => DateTime.parse(DateFormat('yyyyMMdd')
+                            .format(element['date'].toDate()) +
+                        "T000000"),
+                    groupSeparatorBuilder: (DateTime date) => GroupSeparator(
+                      date: date,
+                    ),
+                    indexedItemBuilder: (BuildContext context, dynamic,
+                            int index) =>
                         buildEntryCard(context, snapshot.data.documents[index]),
                     order: GroupedListOrder.DESC,
                   );

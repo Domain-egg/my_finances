@@ -153,13 +153,12 @@ class _SignUpState extends State<SignUp> {
                             if (signUp == "Signed up") {
                               Navigator.of(context)
                                   .pushReplacementNamed('/signIn');
-                            }else{
+                            } else {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
                                       CustomWarning(
-                                        description:
-                                        signUp,
+                                        description: signUp,
                                       ));
                             }
                           } else {

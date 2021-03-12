@@ -18,7 +18,8 @@ class EntryInfo extends StatelessWidget {
 
     final db = FirebaseFirestore.instance;
 
-    Entry editEntry = new Entry(entry['title'], entry['date'].toDate(), entry['money'], entry['reason']);
+    Entry editEntry = new Entry(entry['title'], entry['date'].toDate(),
+        entry['money'], entry['reason']);
 
     //**returns a decorated container with the entry info**
     return new Container(
@@ -61,7 +62,10 @@ class EntryInfo extends StatelessWidget {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => NewEntryView(entry: editEntry, id: entry.id,)));
+                                    builder: (context) => NewEntryView(
+                                          entry: editEntry,
+                                          id: entry.id,
+                                        )));
                           },
                         ),
                         IconButton(
@@ -74,13 +78,39 @@ class EntryInfo extends StatelessWidget {
                           icon: Icon(Icons.delete_forever_rounded, size: 25),
                           onPressed: () async {
                             final uid = await Provider.of(context).auth.getCurrentUID();
-                            Navigator.of(context).pop();
+
+
+
+                            var snapshot = await db
+                                .collection("userData")
+                                .doc(uid)
+                                .collection("sums")
+                                .doc("sumEntry")
+                                .get();
+
+                            double sum = 0;
+
+                            if (snapshot.exists) {
+                              sum = double.parse(snapshot['sumE'].toString());
+                            }
+
+                            await db
+                                .collection("userData")
+                                .doc(uid)
+                                .collection("sums")
+                                .doc("sumEntry")
+                                .set({
+                              'sumE': sum - entry['money'] ,
+                            });
+
                             await db
                                 .collection("userData")
                                 .doc(uid)
                                 .collection("entrys")
                                 .doc(entry.id)
                                 .delete();
+
+                            Navigator.of(context).pop();
                           },
                         ),
                       ],

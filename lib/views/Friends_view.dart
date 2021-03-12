@@ -21,12 +21,12 @@ class _FriendsState extends State<Friends> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.add),
+              icon: Icon(Icons.add, color: Colors.white,),
               onPressed: () {
                 showDialog(
                     context: context,
                     builder: (BuildContext context) => AddFriend(
-                          friend: new Friend(null, null),
+                          friend: new Friend(null, null, 0.00),
                         ));
               },
             )
@@ -92,9 +92,14 @@ class _FriendsState extends State<Friends> {
                         style: new TextStyle(fontSize: 15.0),
                       ),
                       Spacer(),
-                      Icon(
-                        Icons.person_outline_rounded,
-                        size: _height * 0.04,
+                      Text(
+                        "${document['dept'] > 0 ? "+" : ""}  ${document['dept'].toStringAsFixed(2)} €",
+                        style: new TextStyle(
+                          fontSize: 15.0,
+                          color: document['dept'] >= 0
+                              ? Colors.green
+                              : Colors.red,
+                        ),
                       ),
                     ],
                   ),

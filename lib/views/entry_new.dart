@@ -27,6 +27,7 @@ class _NewEntryViewState extends State<NewEntryView> {
 
   DateTime _dateTime;
   int selectedRadio;
+  double startMoney;
 
   @override
   void initState() {
@@ -53,6 +54,7 @@ class _NewEntryViewState extends State<NewEntryView> {
       if (entry.money == null) {
         _moneyController.text = "0.00";
       } else {
+        startMoney = entry.money;
         if (entry.money < 0) {
           setSelectedRadio(0);
           _moneyController.text = (entry.money * -1).toString();
@@ -244,7 +246,7 @@ class _NewEntryViewState extends State<NewEntryView> {
 
                     //**gets UID to save for current User**
                     final uid = await Provider.of(context).auth.getCurrentUID();
-
+                    Navigator.of(context).pop();
                     //**Entry gets saved in Firebase**
                     if (id == null) {
                       await db
@@ -256,23 +258,23 @@ class _NewEntryViewState extends State<NewEntryView> {
                       var snapshot = await db
                           .collection("userData")
                           .doc(uid)
-                          .collection("entrys")
+                          .collection("sums")
                           .doc("sumEntry")
                           .get();
 
                       double sum = 0;
 
                       if (snapshot.exists) {
-                        sum = snapshot['sum'];
+                        sum = double.parse(snapshot['sumE'].toString());
                       }
 
                       await db
                           .collection("userData")
                           .doc(uid)
-                          .collection("entrys")
+                          .collection("sums")
                           .doc("sumEntry")
                           .set({
-                        'sum': entry.money + sum,
+                        'sumE': entry.money + sum,
                       });
                       Navigator.of(context).pop();
                     } else {
@@ -282,7 +284,28 @@ class _NewEntryViewState extends State<NewEntryView> {
                           .collection("entrys")
                           .doc(id)
                           .update(entry.toJson());
-                      Navigator.of(context).pop();
+
+                      var snapshot = await db
+                          .collection("userData")
+                          .doc(uid)
+                          .collection("sums")
+                          .doc("sumEntry")
+                          .get();
+
+                      double sum = 0;
+
+                      if (snapshot.exists) {
+                        sum = double.parse(snapshot['sumE'].toString());
+                      }
+
+                      await db
+                          .collection("userData")
+                          .doc(uid)
+                          .collection("sums")
+                          .doc("sumEntry")
+                          .set({
+                        'sumE': entry.money + sum - startMoney,
+                      });
                     }
                   },
                 ),
