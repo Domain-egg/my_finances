@@ -4,7 +4,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:my_finances/widgets/custom_dialog.dart';
 
-//**Screen that you see when you open the App first time or after logout**
+/// The class creates a Screen that you see when you open the App first time or after logout.
+///
+/// The screen contains a welcome massage and two options for the user,
+/// to get started (create a new account) or log in
+
 class FirstView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

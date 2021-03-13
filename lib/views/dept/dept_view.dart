@@ -5,10 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:my_finances/models/Dept.dart';
-import 'package:my_finances/services/GroupSeperator.dart';
+import 'package:my_finances/services/GroupSeparator.dart';
 import 'package:my_finances/views/dept/dept_info.dart';
 import 'package:my_finances/views/dept/dept_new.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
+
+/// This class creates a list of all dept's.
+///
+/// The list is made out of cards that contain data from the database.
+/// The data gets changed in realtime.
 
 //**Stateful Widget because things are changing**
 class DeptView extends StatefulWidget {

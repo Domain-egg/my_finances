@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+/// The service where all the authentication is handled
+///
+/// The user can log in/out, sign up, the app knows who is logged in,
+/// every time it checks this it checks also if the sum lof the entrys
+/// is declared in the database if not it does it.
+
 class AuthService {
   final FirebaseAuth _firebaseAuth;
 

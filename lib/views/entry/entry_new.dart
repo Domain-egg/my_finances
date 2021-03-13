@@ -4,7 +4,11 @@ import 'package:intl/intl.dart';
 import 'package:my_finances/models/Entry.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
-//**Create new Entry**
+/// This class makes new entry's.
+///
+/// It checks if the user wants to modify an existing entry or create a new one.
+/// It creates a form-like page where the user can input his data,
+/// then it sends the data to the database.
 
 class NewEntryView extends StatefulWidget {
   @override
@@ -276,7 +280,6 @@ class _NewEntryViewState extends State<NewEntryView> {
                           .set({
                         'sumE': entry.money + sum,
                       });
-                      Navigator.of(context).pop();
                     } else {
                       await db
                           .collection("userData")

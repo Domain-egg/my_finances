@@ -5,7 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:my_finances/services/auth_service.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
-//**Shows Info about User**
+/// This class shows info's about the user.
+///
+/// The user can see the e-mail-address there logged-in
+/// and there uid to share. The user can also log out
+/// or reset there password (for later versions)
+
 class ProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

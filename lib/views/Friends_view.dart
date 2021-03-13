@@ -6,6 +6,10 @@ import 'package:my_finances/models/Friend.dart';
 import 'package:my_finances/widgets/add_friend.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
+/// This class creates a list of the added Friends
+///
+/// The list is made out of cards inside there is some relevant information.
+
 //**Stateful Widget because things are changing**
 class Friends extends StatefulWidget {
   @override

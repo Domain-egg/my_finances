@@ -3,9 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_finances/models/Entry.dart';
+import 'package:my_finances/views/entry/entry_new.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
-import 'file:///C:/Users/alexd/Desktop/my_finances/lib/views/entry/entry_new.dart';
+/// This class is here so the User can see more information's about there entry's.
+///
+/// The user can see more information's but can also change the data or delete it.
 
 class EntryInfo extends StatelessWidget {
   final DocumentSnapshot entry;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_finances/services/auth_service.dart';
 
-//**holds the current Firebase Auth instance**
+/// Holds the current Firebase Auth instance.
+
 class Provider extends InheritedWidget {
   final AuthService auth;
 

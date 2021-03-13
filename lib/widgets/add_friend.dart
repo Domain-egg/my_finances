@@ -5,6 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:my_finances/models/Friend.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
+/// This class creates a pop-up with a small form.
+///
+/// The user can choose a name for there friend
+/// and paste in the uid of the friend to add one.
+
 class AddFriend extends StatelessWidget {
   static const double _padding = 20.0;
   final db = FirebaseFirestore.instance;

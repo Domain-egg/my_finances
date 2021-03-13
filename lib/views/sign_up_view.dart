@@ -5,6 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:my_finances/widgets/custom_warning.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
+/// This class creates a view for the user to sign-up
+///
+/// It creates different text-field's and buttons to sign-up
+/// or to switch to the log-in page
+
 class SignUp extends StatefulWidget {
   @override
   _SignUpState createState() => _SignUpState();

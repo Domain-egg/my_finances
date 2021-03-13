@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_finances/views/dept/dept_view.dart';
+import 'package:my_finances/views/entry/entrys_view.dart';
 
-import 'file:///C:/Users/alexd/Desktop/my_finances/lib/views/entry/entrys_view.dart';
+/// This Class makes a card Formed Widget with to Tabs on it.
+/// Inside of the tabs are the Entrys or Depts.
 
 class LowerCard extends StatelessWidget {
   @override

@@ -4,6 +4,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:my_finances/views/lower_card.dart';
 
+/// This class creates a place for all the important data.
+///
+/// The user has a sum of all his entry's and below that
+/// a flexible card the lower_card.dart
+
 class HomeView extends StatefulWidget {
   @override
   _HomeViewState createState() => _HomeViewState();
@@ -51,6 +56,7 @@ class _HomeViewState extends State<HomeView> {
   }
 }
 
+//**returns a styled text-widget with the sum**//
 class UserSum extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

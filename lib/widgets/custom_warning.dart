@@ -2,6 +2,11 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// This class creates a custom warning-popup
+///
+/// It needs a description to inform the user about errors
+/// or wrong inputs.
+
 class CustomWarning extends StatelessWidget {
   final String description, primaryButtonText;
 

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+/// This class creates separators for the lists.
+///
+/// It takes the dates of the individual elements of the list
+/// and groups them in days.
+
 class GroupSeparator extends StatelessWidget {
   final DateTime date;
   GroupSeparator({this.date});

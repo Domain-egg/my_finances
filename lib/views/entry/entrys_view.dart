@@ -5,11 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:grouped_list/grouped_list.dart';
 import 'package:intl/intl.dart';
 import 'package:my_finances/models/Entry.dart';
-import 'package:my_finances/services/GroupSeperator.dart';
+import 'package:my_finances/services/GroupSeparator.dart';
+import 'package:my_finances/views/entry/entry_info.dart';
+import 'package:my_finances/views/entry/entry_new.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
-import 'file:///C:/Users/alexd/Desktop/my_finances/lib/views/entry/entry_info.dart';
-import 'file:///C:/Users/alexd/Desktop/my_finances/lib/views/entry/entry_new.dart';
+/// This class creates a list of all entry's.
+///
+/// The list is made out of cards that contain data from the database.
+/// The data gets changed in realtime.
 
 //**Stateful Widget because things are changing**
 class EntryView extends StatefulWidget {

@@ -2,6 +2,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+/// This class creates a custom-dialog
+///
+/// The dialog needs a title, description,
+/// a primary-button-text and a route fore the button.
+/// the secondary button is optional.
+
 class CustomDialog extends StatelessWidget {
   final String title,
       description,

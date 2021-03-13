@@ -9,6 +9,11 @@ import 'package:my_finances/views/sign_in_view.dart';
 import 'package:my_finances/views/sign_up_view.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
+/// This class runs the start of the app.
+///
+/// It checks if the user is already logged in
+/// and shows the right page. It manages all the routes.
+
 void main() async {
   //**sets StatusBar Color to transparent**
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(

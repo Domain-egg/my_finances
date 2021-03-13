@@ -5,7 +5,11 @@ import 'package:intl/intl.dart';
 import 'package:my_finances/models/Dept.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
-//**Create new dept**
+/// This class makes new dept's.
+///
+/// It checks if the user wants to modify an existing dept or create a new one.
+/// It creates a form-like page where the user can input his data,
+/// then it sends the data to the database.
 
 class NewDeptView extends StatefulWidget {
   @override

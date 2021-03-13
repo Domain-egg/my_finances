@@ -5,6 +5,11 @@ import 'package:my_finances/views/Friends_view.dart';
 import 'package:my_finances/views/home_view.dart';
 import 'package:my_finances/views/profile_view.dart';
 
+/// This class creates a viewer of the different pages.
+///
+/// It shows the different views and makes a background
+/// and other gui elements like the menu-drawer.
+
 class ViewPages extends StatefulWidget {
   @override
   State<StatefulWidget> createState() {
