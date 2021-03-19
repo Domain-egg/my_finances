@@ -28,7 +28,15 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Provider(
+    return  GestureDetector(
+        onTap: () {
+      FocusScopeNode currentFocus = FocusScope.of(context);
+
+      if (!currentFocus.hasPrimaryFocus) {
+        currentFocus.unfocus();
+      }
+    },
+    child:Provider(
       auth: AuthService(FirebaseAuth.instance),
       child: MaterialApp(
         title: "MyFinances",
@@ -48,7 +56,7 @@ class MyApp extends StatelessWidget {
           '/firstView': (BuildContext context) => FirstView(),
         },
       ),
-    );
+    ));
   }
 }
 

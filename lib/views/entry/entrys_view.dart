@@ -37,9 +37,9 @@ class _EntryViewState extends State<EntryView> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => NewEntryView(
-                              entry: newEntry,
-                              id: null,
-                            )));
+                          entry: newEntry,
+                          id: null,
+                        )));
               },
             )
           ],
@@ -55,13 +55,13 @@ class _EntryViewState extends State<EntryView> {
                   return GroupedListView<dynamic, DateTime>(
                     elements: snapshot.data.documents,
                     groupBy: (element) => DateTime.parse(DateFormat('yyyyMMdd')
-                            .format(element['date'].toDate()) +
+                        .format(element['date'].toDate()) +
                         "T000000"),
                     groupSeparatorBuilder: (DateTime date) => GroupSeparator(
                       date: date,
                     ),
                     indexedItemBuilder: (BuildContext context, dynamic,
-                            int index) =>
+                        int index) =>
                         buildEntryCard(context, snapshot.data.documents[index]),
                     order: GroupedListOrder.DESC,
                   );
@@ -98,7 +98,7 @@ class _EntryViewState extends State<EntryView> {
             showModalBottomSheet(
                 shape: RoundedRectangleBorder(
                   borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(25.0)),
+                  BorderRadius.vertical(top: Radius.circular(25.0)),
                 ),
                 context: context,
                 builder: (BuildContext bc) {

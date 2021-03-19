@@ -74,6 +74,10 @@ class _NewDeptViewState extends State<NewDeptView> {
       });
     }
 
+    if (dept.status != null) {
+      setSelectedStatus(dept.status);
+    }
+
     if (_moneyController.text == "") {
       if (dept.money == null) {
         _moneyController.text = "0.00";
@@ -254,6 +258,7 @@ class _NewDeptViewState extends State<NewDeptView> {
                         value: statusValue,
                         onChanged: (String newValue) {
                           setSelectedStatus(newValue);
+                          dept.status = newValue;
                         },
                         items: <String>['open', 'paid']
                             .map<DropdownMenuItem<String>>((String value) {
@@ -388,15 +393,12 @@ class _NewDeptViewState extends State<NewDeptView> {
                           .collection("depts")
                           .add(dept.toJson());
 
-                      //**for later Versions**//
-
-                      /*
 
                       var snapshot = await db
                           .collection("userData")
                           .doc(uid)
-                          .collection("sums")
-                          .doc("sumdept")
+                          .collection("sumsD")
+                          .doc("sumDepts")
                           .get();
 
 
@@ -409,13 +411,13 @@ class _NewDeptViewState extends State<NewDeptView> {
                       await db
                           .collection("userData")
                           .doc(uid)
-                          .collection("sums")
-                          .doc("sumdept")
+                          .collection("sumsD")
+                          .doc("sumDepts")
                           .set({
                         'sumD': dept.money + sum,
                       });
                       Navigator.of(context).pop();
-                      */
+
                     } else {
                       await db
                           .collection("userData")
@@ -423,12 +425,12 @@ class _NewDeptViewState extends State<NewDeptView> {
                           .collection("depts")
                           .doc(id)
                           .update(dept.toJson());
-                      /*
+
                       var snapshot = await db
                           .collection("userData")
                           .doc(uid)
-                          .collection("sums")
-                          .doc("sumdept")
+                          .collection("sumsD")
+                          .doc("sumDepts")
                           .get();
 
                       double sum = 0;
@@ -440,11 +442,11 @@ class _NewDeptViewState extends State<NewDeptView> {
                       await db
                           .collection("userData")
                           .doc(uid)
-                          .collection("sums")
-                          .doc("sumdept")
+                          .collection("sumsD")
+                          .doc("sumDepts")
                           .set({
                         'sumD': dept.money + sum - startMoney,
-                      });*/
+                      });
                     }
                   },
                 ),

@@ -17,14 +17,14 @@ class AuthService {
 
   //**gets current UID**
   Future<String> getCurrentUID() async {
-    var snapshot = await FirebaseFirestore.instance
+    var snapshotE = await FirebaseFirestore.instance
         .collection("userData")
         .doc(_firebaseAuth.currentUser.uid)
         .collection("sums")
         .doc("sumEntry")
         .get();
 
-    if (!snapshot.exists) {
+    if (!snapshotE.exists) {
       await FirebaseFirestore.instance
           .collection("userData")
           .doc(_firebaseAuth.currentUser.uid)
@@ -32,6 +32,25 @@ class AuthService {
           .doc("sumEntry")
           .set({
         'sumE': 0.00,
+      });
+    }
+
+
+    var snapshotD = await FirebaseFirestore.instance
+        .collection("userData")
+        .doc(_firebaseAuth.currentUser.uid)
+        .collection("sumsD")
+        .doc("sumDepts")
+        .get();
+
+    if (!snapshotD.exists) {
+      await FirebaseFirestore.instance
+          .collection("userData")
+          .doc(_firebaseAuth.currentUser.uid)
+          .collection("sumsD")
+          .doc("sumDepts")
+          .set({
+        'sumD': 0.00,
       });
     }
 

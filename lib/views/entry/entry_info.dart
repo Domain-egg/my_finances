@@ -52,6 +52,7 @@ class EntryInfo extends StatelessWidget {
                   onPressed: () {
                     //**closes the popup**
                     Navigator.of(context).pop();
+                    FocusManager.instance.primaryFocus.unfocus();
                   },
                 ),
                 Spacer(),

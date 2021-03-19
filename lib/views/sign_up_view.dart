@@ -27,7 +27,7 @@ class _SignUpState extends State<SignUp> {
     final _height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      resizeToAvoidBottomInset: true,
+      //resizeToAvoidBottomInset: true,
       body: Container(
         decoration: BoxDecoration(
           image: DecorationImage(
@@ -37,9 +37,9 @@ class _SignUpState extends State<SignUp> {
         ),
         width: _width,
         height: _height,
-        child: ListView(children: <Widget>[
-          SafeArea(
-            child: Padding(
+        child: SafeArea(
+          child: ListView(children: <Widget>[
+            Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 children: <Widget>[
@@ -202,8 +202,8 @@ class _SignUpState extends State<SignUp> {
                 ],
               ),
             ),
-          ),
-        ]),
+          ]),
+        ),
       ),
     );
   }

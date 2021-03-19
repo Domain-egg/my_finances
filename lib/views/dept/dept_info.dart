@@ -56,6 +56,7 @@ class DeptInfo extends StatelessWidget {
                   onPressed: () {
                     //**closes the popup**
                     Navigator.of(context).pop();
+                    FocusManager.instance.primaryFocus.unfocus();
                   },
                 ),
                 Spacer(),
@@ -88,13 +89,12 @@ class DeptInfo extends StatelessWidget {
                             final uid =
                                 await Provider.of(context).auth.getCurrentUID();
 
-                            //**for later Versions**//
-                            /*
+
                             var snapshot = await db
                                 .collection("userData")
                                 .doc(uid)
-                                .collection("sums")
-                                .doc("sumDept")
+                                .collection("sumsD")
+                                .doc("sumDepts")
                                 .get();
 
                             double sum = 0;
@@ -106,12 +106,12 @@ class DeptInfo extends StatelessWidget {
                             await db
                                 .collection("userData")
                                 .doc(uid)
-                                .collection("sums")
-                                .doc("sumDept")
+                                .collection("sumsD")
+                                .doc("sumDepts")
                                 .set({
                               'sumE': sum - dept['money'] ,
                             });
-                            */
+
 
                             await db
                                 .collection("userData")
