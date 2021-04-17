@@ -2,6 +2,7 @@
 
 class Dept {
   String friend;
+  String fId;
   DateTime date;
   double money;
   String reason;
@@ -9,6 +10,7 @@ class Dept {
 
   Dept(
     this.friend,
+    this.fId,
     this.date,
     this.money,
     this.reason,
@@ -17,6 +19,7 @@ class Dept {
 
   Map<String, dynamic> toJson() => {
         'friend': friend,
+        'fId': fId,
         'date': date,
         'money': money,
         'reason': reason,

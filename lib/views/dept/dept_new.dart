@@ -3,6 +3,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:my_finances/models/Dept.dart';
+import 'package:my_finances/models/User.dart';
+import 'package:my_finances/services/save_dept.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
 /// This class makes new dept's.
@@ -35,12 +37,14 @@ class _NewDeptViewState extends State<NewDeptView> {
   double startMoney;
   String statusValue;
   String selectedFriend;
+  String startStatus;
 
   @override
   void initState() {
     super.initState();
     selectedRadio = 0;
     statusValue = 'open';
+    startStatus = widget.dept.status;
   }
 
   setSelectedRadio(int val) {
@@ -69,7 +73,7 @@ class _NewDeptViewState extends State<NewDeptView> {
 
     if (dept.friend != null) {
       setState(() {
-        selectedFriend = dept.friend;
+        selectedFriend = dept.fId;
         print(selectedFriend);
       });
     }
@@ -161,10 +165,10 @@ class _NewDeptViewState extends State<NewDeptView> {
                                     items: snapshot.data.docs
                                         .map((DocumentSnapshot document) {
                                       return new DropdownMenuItem<String>(
-                                          value: document.data()['name'],
+                                          value: document.data()['uid'],
                                           child: new Container(
                                             child: new Text(
-                                                document.data()['name']),
+                                                document.data()['name'].toString()),
                                           ));
                                     }).toList(),
                                   ),
@@ -374,7 +378,11 @@ class _NewDeptViewState extends State<NewDeptView> {
                   ),
                   onPressed: () async {
                     //**InputData gets Converted in to dept**
-                    dept.friend = selectedFriend;
+                    final auth = Provider.of(context).auth;
+                    String uid = await Provider.of(context).auth.getCurrentUID();
+                    UserModel user = await auth.getUserFromDB(uid: selectedFriend);
+                    dept.friend = user.username;
+                    dept.fId = selectedFriend;
                     dept.date = _dateTime;
                     dept.money = selectedRadio == 1
                         ? double.parse(_moneyController.text)
@@ -382,72 +390,18 @@ class _NewDeptViewState extends State<NewDeptView> {
                     dept.status = statusValue;
                     dept.reason = _reasonController.text;
 
-                    //**gets UID to save for current User**
-                    final uid = await Provider.of(context).auth.getCurrentUID();
-                    Navigator.of(context).pop();
-                    //**dept gets saved in Firebase**
-                    if (id == null) {
-                      await db
-                          .collection("userData")
-                          .doc(uid)
-                          .collection("depts")
-                          .add(dept.toJson());
 
-
-                      var snapshot = await db
-                          .collection("userData")
-                          .doc(uid)
-                          .collection("sumsD")
-                          .doc("sumDepts")
-                          .get();
-
-
-                      double sum = 0;
-
-                      if (snapshot.exists) {
-                        sum = double.parse(snapshot['sumD'].toString());
-                      }
-
-                      await db
-                          .collection("userData")
-                          .doc(uid)
-                          .collection("sumsD")
-                          .doc("sumDepts")
-                          .set({
-                        'sumD': dept.money + sum,
-                      });
+                    if(dept.friend!=null){
+                      //**gets UID to save for current User**
+                      SaveDept saveDept = new SaveDept();
+                      await saveDept.save(uid, id, dept, startMoney, startStatus, context);
+                      uid = dept.fId;
+                      dept.fId =  await Provider.of(context).auth.getCurrentUID();
+                      dept.money = dept.money*-1;
+                      await saveDept.save(uid, id, dept, startMoney, startStatus, context);
                       Navigator.of(context).pop();
-
-                    } else {
-                      await db
-                          .collection("userData")
-                          .doc(uid)
-                          .collection("depts")
-                          .doc(id)
-                          .update(dept.toJson());
-
-                      var snapshot = await db
-                          .collection("userData")
-                          .doc(uid)
-                          .collection("sumsD")
-                          .doc("sumDepts")
-                          .get();
-
-                      double sum = 0;
-
-                      if (snapshot.exists) {
-                        sum = double.parse(snapshot['sumE'].toString());
-                      }
-
-                      await db
-                          .collection("userData")
-                          .doc(uid)
-                          .collection("sumsD")
-                          .doc("sumDepts")
-                          .set({
-                        'sumD': dept.money + sum - startMoney,
-                      });
                     }
+
                   },
                 ),
               ],

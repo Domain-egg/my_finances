@@ -149,7 +149,6 @@ class UserSumD extends StatelessWidget {
         return new Column(
           children: snapshot.data.docs.map((DocumentSnapshot document) {
             String _sumD = document.data()['sumD'].toStringAsFixed(2);
-            //String _sumD = document.data()['sumD'].toStringAsFixed(2);
 
             return Column(
               children: [
@@ -160,16 +159,6 @@ class UserSumD extends StatelessWidget {
                     fontSize: 20,
                   ),
                 ),
-
-                //**for later versions***//
-
-                /*new Text(
-                  "$_sumD €",
-                  style: new TextStyle(
-                    color: Colors.white,
-                    fontSize: 15,
-                  ),
-                ),*/
               ],
             );
           }).toList(),

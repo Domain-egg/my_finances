@@ -2,8 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_finances/models/Friend.dart';
-import 'package:my_finances/widgets/add_friend.dart';
+import 'package:my_finances/views/dept/Friend_Dept.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
 /// This class creates a list of the added Friends
@@ -21,7 +20,7 @@ class _FriendsState extends State<Friends> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Row(
+        /* Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             IconButton(
@@ -36,9 +35,21 @@ class _FriendsState extends State<Friends> {
                           friend: new Friend(null, null, 0.00),
                         ));
               },
+            ),
+            IconButton(
+              icon: Icon(
+                Icons.add,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AllUsers()));
+              },
             )
           ],
-        ),
+        ),*/
 
         //**Builds List**
         Container(
@@ -76,55 +87,67 @@ class _FriendsState extends State<Friends> {
   Widget buildEntryCard(BuildContext context, DocumentSnapshot document) {
     //**gets width and height of screen**
     final _width = MediaQuery.of(context).size.width;
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Card(
-          elevation: 0,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(25.0),
-          ),
-          color: Color(0xFFF2F2F2),
-          child: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 12.0, bottom: 4.0),
-                  child: Row(
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => FriendDepts(
+                      fName: document["name"],
+                      fId: document["uid"],
+                    )));
+      },
+      child: Container(
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Card(
+            elevation: 0,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(25.0),
+            ),
+            color: Color(0xFFF2F2F2),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12.0, bottom: 4.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          document['name'],
+                          style: new TextStyle(fontSize: 15.0),
+                        ),
+                        Spacer(),
+                        Text(
+                          "${document['dept'] > 0 ? "+" : ""}  ${document['dept'].toStringAsFixed(2)} €",
+                          style: new TextStyle(
+                            fontSize: 15.0,
+                            color: document['dept'] >= 0
+                                ? Colors.green
+                                : Colors.red,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Row(
                     children: <Widget>[
-                      Text(
-                        document['name'],
-                        style: new TextStyle(fontSize: 15.0),
-                      ),
-                      Spacer(),
-                      Text(
-                        "${document['dept'] > 0 ? "+" : ""}  ${document['dept'].toStringAsFixed(2)} €",
-                        style: new TextStyle(
-                          fontSize: 15.0,
-                          color:
-                              document['dept'] >= 0 ? Colors.green : Colors.red,
+                      Container(
+                        width: _width * 0.87,
+                        child: AutoSizeText(
+                          document['uid'],
+                          maxLines: 1,
+                          style: new TextStyle(
+                            fontSize: 11.0,
+                            color: Colors.grey[700],
+                          ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                Row(
-                  children: <Widget>[
-                    Container(
-                      width: _width * 0.87,
-                      child: AutoSizeText(
-                        document['uid'],
-                        maxLines: 1,
-                        style: new TextStyle(
-                          fontSize: 11.0,
-                          color: Colors.grey[700],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

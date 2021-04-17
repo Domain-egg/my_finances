@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:my_finances/models/User.dart';
 
 /// The service where all the authentication is handled
 ///
@@ -11,6 +12,9 @@ class AuthService {
   final FirebaseAuth _firebaseAuth;
 
   AuthService(this._firebaseAuth);
+
+  UserModel userModel = UserModel();
+  final userRef = FirebaseFirestore.instance.collection("userData");
 
   //**checks if User changes**
   Stream<User> get authStateChanges => _firebaseAuth.idTokenChanges();
@@ -34,7 +38,6 @@ class AuthService {
         'sumE': 0.00,
       });
     }
-
 
     var snapshotD = await FirebaseFirestore.instance
         .collection("userData")
@@ -81,6 +84,43 @@ class AuthService {
       return "Signed up";
     } on FirebaseAuthException catch (e) {
       return e.message;
+    }
+  }
+
+  Future<void> addUserToDB(
+      {String username, String email, DateTime timestamp}) async {
+    userModel = UserModel(
+        uid: _firebaseAuth.currentUser.uid,
+        username: username,
+        email: email,
+        timestamp: timestamp);
+
+    await userRef
+        .doc(_firebaseAuth.currentUser.uid)
+        .set(userModel.toMap(userModel));
+  }
+
+//4
+  Future<UserModel> getUserFromDB({String uid}) async {
+    final DocumentSnapshot doc = await userRef.doc(uid).get();
+    return UserModel.fromMap(doc.data());
+  }
+
+  Future<bool> getUserExists({String username}) async {
+    bool exists = false;
+    try {
+      await FirebaseFirestore.instance
+          .collection("userData")
+          .orderBy("username")
+          .startAt([username]).endAt([username]).get().then((doc) {
+        if (doc.size==0)
+          exists = true;
+        else
+          exists = false;
+      });
+      return exists;
+    } catch (e) {
+      return false;
     }
   }
 }

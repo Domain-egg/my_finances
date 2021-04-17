@@ -17,6 +17,7 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   final _primaryColor = const Color(0xFFE336AE);
+  TextEditingController _usernameController = new TextEditingController();
   TextEditingController _emailController = new TextEditingController();
   TextEditingController _passwordController = new TextEditingController();
   TextEditingController _repeatController = new TextEditingController();
@@ -25,6 +26,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
+    final DateTime timestamp = DateTime.now();
 
     return Scaffold(
       //resizeToAvoidBottomInset: true,
@@ -49,6 +51,28 @@ class _SignUpState extends State<SignUp> {
                     height: _height * 0.25,
                   ),
                   SizedBox(height: _height * 0.05),
+                  Container(
+                    width: _width * 0.8,
+                    child: TextField(
+                      controller: _usernameController,
+                      textAlign: TextAlign.center,
+                      decoration: InputDecoration(
+                        hintText: "Username",
+                        hintMaxLines: 1,
+                        hintStyle: TextStyle(
+                          color: Colors.grey,
+                        ),
+                        fillColor: Colors.white,
+                        border: new OutlineInputBorder(
+                          borderRadius: const BorderRadius.all(
+                            const Radius.circular(50.0),
+                          ),
+                        ),
+                        filled: true,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: _height * 0.025),
                   Container(
                     width: _width * 0.8,
                     child: TextField(
@@ -149,23 +173,51 @@ class _SignUpState extends State<SignUp> {
                               _passwordController.text) {
                             //**Sign Up with InputData**
                             final auth = Provider.of(context).auth;
+                            bool alreadyTaken = await auth.getUserExists(username: _usernameController.text);
+                            if (alreadyTaken) {
+                              String signUp = await auth.signUp(
+                                  email: _emailController.text.trim(),
+                                  password: _passwordController.text.trim());
+                              print("$signUp");
 
-                            String signUp = await auth.signUp(
-                                email: _emailController.text.trim(),
-                                password: _passwordController.text.trim());
-                            print("$signUp");
+                              if (signUp == "Signed up") {
+                                String signIn = await auth.signIn(
+                                    email: _emailController.text.trim(),
+                                    password: _passwordController.text.trim());
+                                print("$signIn");
+                                if (signIn == "Signed in") {
+                                  await auth.addUserToDB(
+                                      username: _usernameController.text.trim(),
+                                      email: _emailController.text.trim(),
+                                      timestamp: timestamp);
 
-                            if (signUp == "Signed up") {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/signIn');
-                            } else {
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('/home');
+                                } else {
+                                  showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          CustomWarning(
+                                            description: signIn,
+                                          ));
+                                }
+                              } else {
+                                showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        CustomWarning(
+                                          description: signUp,
+                                        ));
+                              }
+                            } else{
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
                                       CustomWarning(
-                                        description: signUp,
+                                        description: "Username already taken",
                                       ));
                             }
+
                           } else {
                             showDialog(
                                 context: context,

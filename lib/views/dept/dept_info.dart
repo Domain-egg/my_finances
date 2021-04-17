@@ -24,6 +24,7 @@ class DeptInfo extends StatelessWidget {
 
     Dept editDept = new Dept(
         dept.data()['friend'],
+        dept.data()['fId'],
         dept.data()['date'].toDate(),
         dept.data()['money'],
         dept.data()['reason'],
@@ -100,7 +101,7 @@ class DeptInfo extends StatelessWidget {
                             double sum = 0;
 
                             if (snapshot.exists) {
-                              sum = double.parse(snapshot['sumE'].toString());
+                              sum = double.parse(snapshot['sumD'].toString());
                             }
 
                             await db
@@ -109,7 +110,7 @@ class DeptInfo extends StatelessWidget {
                                 .collection("sumsD")
                                 .doc("sumDepts")
                                 .set({
-                              'sumE': sum - dept['money'] ,
+                              'sumD': sum - dept['money'] ,
                             });
 
 

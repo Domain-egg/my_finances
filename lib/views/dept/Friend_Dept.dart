@@ -10,65 +10,84 @@ import 'package:my_finances/views/dept/dept_info.dart';
 import 'package:my_finances/views/dept/dept_new.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
-/// This class creates a list of all dept's.
+/// This class makes new dept's.
 ///
-/// The list is made out of cards that contain data from the database.
-/// The data gets changed in realtime.
+/// It checks if the user wants to modify an existing dept or create a new one.
+/// It creates a form-like page where the user can input his data,
+/// then it sends the data to the database.
 
-//**Stateful Widget because things are changing**
-class DeptView extends StatefulWidget {
+class FriendDepts extends StatefulWidget {
   @override
-  _DeptViewState createState() => _DeptViewState();
+  final String fId;
+  final String fName;
+  FriendDepts({Key key, @required this.fId, @required this.fName})
+      : super(key: key);
+  _FriendDeptsState createState() => _FriendDeptsState();
 }
 
-class _DeptViewState extends State<DeptView> {
+class _FriendDeptsState extends State<FriendDepts> {
+
   @override
   Widget build(BuildContext context) {
     final newDept = new Dept(null, null, null, null, null, null);
-    return Column(
-      children: <Widget>[
-        Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => NewDeptView(
-                              dept: newDept,
-                              id: null,
-                            )));
-              },
-            )
-          ],
-        ),
+    return Scaffold(
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16.0),
+            child: Column(
+            children: <Widget>[
+              AutoSizeText(widget.fName,maxLines: 1, style: TextStyle(color: Colors.black, fontSize: 20),),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.arrow_back),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => NewDeptView(
+                                dept: newDept,
+                                id: null,
+                              )));
+                    },
+                  )
+                ],
+              ),
 
-        //**Builds List**
-        Container(
-          child: Expanded(
-            child: new StreamBuilder(
-                stream: getUsersFriendsStreamSnapshots(context),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) return const Text("Loading...");
-                  return GroupedListView<dynamic, DateTime>(
-                    elements: snapshot.data.documents,
-                    groupBy: (element) => DateTime.parse(DateFormat('yyyyMMdd')
-                            .format(element['date'].toDate()) +
-                        "T000000"),
-                    groupSeparatorBuilder: (DateTime date) => GroupSeparator(
-                      date: date,
-                    ),
-                    indexedItemBuilder: (BuildContext context, dynamic,
-                            int index) =>
-                        buildDeptCard(context, snapshot.data.documents[index]),
-                    order: GroupedListOrder.DESC,
-                  );
-                }),
+              //**Builds List**
+              Container(
+                child: Expanded(
+                  child: new StreamBuilder(
+                      stream: getUsersFriendsStreamSnapshots(context),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) return const Text("Loading...");
+                        return GroupedListView<dynamic, DateTime>(
+                          elements: snapshot.data.documents,
+                          groupBy: (element) => DateTime.parse(DateFormat('yyyyMMdd')
+                              .format(element['date'].toDate()) +
+                              "T000000"),
+                          groupSeparatorBuilder: (DateTime date) => GroupSeparator(
+                            date: date,
+                          ),
+                          indexedItemBuilder: (BuildContext context, dynamic,
+                              int index) =>
+                              buildDeptCard(context, snapshot.data.documents[index]),
+                          order: GroupedListOrder.DESC,
+                        );
+                      }),
+                ),
+              ),
+            ],
+      ),
           ),
         ),
-      ],
     );
   }
 
@@ -80,7 +99,7 @@ class _DeptViewState extends State<DeptView> {
         .collection('userData')
         .doc(uid)
         .collection("depts")
-        .orderBy('date', descending: true)
+        .where("friend", isEqualTo: widget.fName)
         .snapshots();
   }
 
@@ -98,7 +117,7 @@ class _DeptViewState extends State<DeptView> {
             showModalBottomSheet(
                 shape: RoundedRectangleBorder(
                   borderRadius:
-                      BorderRadius.vertical(top: Radius.circular(25.0)),
+                  BorderRadius.vertical(top: Radius.circular(25.0)),
                 ),
                 context: context,
                 builder: (BuildContext bc) {
@@ -116,12 +135,12 @@ class _DeptViewState extends State<DeptView> {
             child: Container(
               decoration: BoxDecoration(
                   color: Color(0xFFF2F2F2),
-                border: Border(
-                  right: BorderSide(color: document.data()['status'] == "paid"
-                      ? Colors.green
-                      : Colors.red,
-                      width: 10.0)
-                )
+                  border: Border(
+                      right: BorderSide(color: document.data()['status'] == "paid"
+                          ? Colors.green
+                          : Colors.red,
+                          width: 10.0)
+                  )
               ),
 
               child: Padding(
