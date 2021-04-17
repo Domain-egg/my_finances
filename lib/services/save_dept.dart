@@ -1,6 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:my_finances/models/Dept.dart';
 
+///class that saves all Data in the DB
+///
+///
+
+
+
 class SaveDept {
   save(String uid, String id, Dept dept, double startMoney, String startStatus,
       context) async {

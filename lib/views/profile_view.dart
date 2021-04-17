@@ -72,24 +72,6 @@ class ProfileView extends StatelessWidget {
           ),
           SizedBox(height: _height * 0.1),
           //**PasswordReset Button**
-          ButtonTheme(
-            minWidth: _width * 0.4,
-            child: RaisedButton(
-              color: Color(0xFFE336AE),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: AutoSizeText(
-                  "Reset Password",
-                  style: TextStyle(fontSize: 20, color: Colors.white),
-                  maxLines: 1,
-                ),
-              ),
-              onPressed: () {},
-            ),
-          ),
           SizedBox(height: _height * 0.1),
           //**LogOut Button**
           ButtonTheme(

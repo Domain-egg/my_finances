@@ -79,12 +79,6 @@ class DeptInfo extends StatelessWidget {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.share_rounded, size: 25),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        IconButton(
                           icon: Icon(Icons.delete_forever_rounded, size: 25),
                           onPressed: () async {
                             final uid =
@@ -120,6 +114,31 @@ class DeptInfo extends StatelessWidget {
                                 .collection("depts")
                                 .doc(dept.id)
                                 .delete();
+
+                            var snapshotF = await db
+                                .collection("userData")
+                                .doc(uid)
+                                .collection("friends")
+                                .doc(dept["fId"])
+                                .get();
+
+                            double sumF = 0;
+
+                            if (snapshot.exists) {
+                              sumF = double.parse(snapshot['dept'].toString());
+                            }
+
+                            await db
+                                .collection("userData")
+                                .doc(uid)
+                                .collection("friends")
+                                .doc(dept["fId"])
+                                .update({
+                              'dept': sumF - dept['money'] ,
+                            });
+
+
+
 
                             Navigator.of(context).pop();
                           },

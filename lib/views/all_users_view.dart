@@ -7,9 +7,10 @@ import 'package:my_finances/models/Friend.dart';
 import 'package:my_finances/models/User.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
-/// This class creates a list of the added Friends
+/// This class creates a list of all Users
 ///
-/// The list is made out of cards inside there is some relevant information.
+/// The list is made out of cards inside there is some relevant
+/// information and a Button to send a friend Request.
 
 //**Stateful Widget because things are changing**
 class AllUsers extends StatefulWidget {

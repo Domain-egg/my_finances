@@ -2,7 +2,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:my_finances/views/dept/Friend_Dept.dart';
+import 'package:my_finances/views/dept/friend_dept.dart';
 import 'package:my_finances/widgets/provider_widget.dart';
 
 /// This class creates a list of the added Friends
@@ -20,36 +20,6 @@ class _FriendsState extends State<Friends> {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        /* Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext context) => AddFriend(
-                          friend: new Friend(null, null, 0.00),
-                        ));
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.add,
-                color: Colors.white,
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => AllUsers()));
-              },
-            )
-          ],
-        ),*/
 
         //**Builds List**
         Container(

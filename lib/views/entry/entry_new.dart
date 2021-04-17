@@ -111,7 +111,7 @@ class _NewEntryViewState extends State<NewEntryView> {
               onChanged: (val) {
                 setSelectedRadio(val);
               },
-              title: const Text('Ausgabe'),
+              title: const Text('spend'),
               activeColor: Colors.redAccent,
             ),
             RadioListTile(
@@ -121,7 +121,7 @@ class _NewEntryViewState extends State<NewEntryView> {
                   setSelectedRadio(val);
                 },
                 activeColor: Colors.greenAccent,
-                title: const Text('Einnahme')),
+                title: const Text('receipt')),
 
             //**MoneyTextField**
             Padding(

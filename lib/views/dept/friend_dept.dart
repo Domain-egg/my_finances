@@ -99,7 +99,8 @@ class _FriendDeptsState extends State<FriendDepts> {
         .collection('userData')
         .doc(uid)
         .collection("depts")
-        .where("friend", isEqualTo: widget.fName)
+    .orderBy("fId")
+        .startAt([widget.fId]).endAt([widget.fId])
         .snapshots();
   }
 

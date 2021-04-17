@@ -87,6 +87,7 @@ class AuthService {
     }
   }
 
+  //**add username to DB
   Future<void> addUserToDB(
       {String username, String email, DateTime timestamp}) async {
     userModel = UserModel(
@@ -100,12 +101,13 @@ class AuthService {
         .set(userModel.toMap(userModel));
   }
 
-//4
+  //**gets user from DB by id
   Future<UserModel> getUserFromDB({String uid}) async {
     final DocumentSnapshot doc = await userRef.doc(uid).get();
     return UserModel.fromMap(doc.data());
   }
 
+  //**checks if user exists**
   Future<bool> getUserExists({String username}) async {
     bool exists = false;
     try {

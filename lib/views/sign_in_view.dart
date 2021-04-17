@@ -194,53 +194,6 @@ class _SignInState extends State<SignIn> with TickerProviderStateMixin {
                         ),
                       ),
                     ),
-                    /*ButtonTheme(
-                      minWidth: _width * 0.4,
-                      child: RaisedButton(
-                        color: _primaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: AutoSizeText(
-                            "Login",
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                            maxLines: 1,
-                          ),
-                        ),
-                        onPressed: () async {
-                          //**LogIn with Input**
-                          try {
-                            final auth = Provider.of(context).auth;
-
-                            String login = await auth.signIn(
-                                email: _emailController.text.trim(),
-                                password: _passwordController.text.trim());
-                            print("Signed In with ID $login");
-                            if (login == "Signed in") {
-                              Navigator.push(
-                                  context,
-                                  PageTransition(
-                                      type: PageTransitionType.fade,
-                                      child: HomeView()));
-                              //Navigator.of(context).pushReplacementNamed('/home');
-                            } else {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      CustomWarning(
-                                        description: login,
-                                      ));
-                            }
-                          } catch (e) {
-                            print(e);
-                          }
-                        },
-                      ),
-                    ),
-                    */
-                     */
                     SizedBox(height: _height * 0.0125),
                     //**Create Account Button**
                     FlatButton(

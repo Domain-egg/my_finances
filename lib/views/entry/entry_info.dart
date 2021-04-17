@@ -74,12 +74,6 @@ class EntryInfo extends StatelessWidget {
                           },
                         ),
                         IconButton(
-                          icon: Icon(Icons.share_rounded, size: 25),
-                          onPressed: () {
-                            Navigator.of(context).pop();
-                          },
-                        ),
-                        IconButton(
                           icon: Icon(Icons.delete_forever_rounded, size: 25),
                           onPressed: () async {
                             final uid =
